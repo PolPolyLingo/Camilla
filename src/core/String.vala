@@ -50,5 +50,34 @@ namespace Camilla.Core {
             strs += tmp;
             return strs;
         }
+
+        /**
+         * The character string is divided using the line feed code as the delimiter.
+         * The divided character string is returned in list format.
+         * @param str string to be divided
+         * @result string converted to List<string>
+         */
+        public static List<string> toLines (string str) {
+            List<string> lineList = new List<string>();
+            string line = "";
+
+            if (Objects.isNull (str)) {
+                return lineList;
+            }
+
+            for (int i = 0; i < str.length; i++) {
+                if (str.valid_char (i)) {
+                    var nowChar = str.get_char (i);
+                    line += nowChar.to_string ();
+
+                    if (nowChar == '\n') {
+                        lineList.append (line);
+                        line = "";
+                    }
+                }
+            }
+
+            return lineList;
+        }
     }
 }

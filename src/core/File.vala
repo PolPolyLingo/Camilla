@@ -205,5 +205,36 @@ namespace Camilla.Core {
             int start = file.last_index_of (".");
             return file.slice (start, file.length);
         }
+
+        /**
+         * Returns the contents of the file in List format.
+         * @param path file path to be read.
+         * @return the contents of the file in List. If error occur, returns empty list.
+         */
+        public static GLib.List<string> lines (string path) {
+            GLib.List<string> lineList = new GLib.List<string>();
+
+            if (String.isNullOrEmpty (path)) {
+                return lineList;
+            }
+
+            var file = GLib.File.new_for_path (path);
+            if (!file.query_exists ()) {
+                return lineList;
+            }
+
+            try {
+                // Open file for reading and wrap returned FileInputStream into a
+                // DataInputStream, so we can read line by line
+                var dis = new DataInputStream (file.read ());
+                string line;
+                while ((line = dis.read_line (null)) != null) {
+                    lineList.append (line);
+                }
+            } catch (Error e) {
+                error ("%s", e.message);
+            }
+            return lineList;
+        }
     }
 }

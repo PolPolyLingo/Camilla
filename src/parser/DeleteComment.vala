@@ -47,10 +47,11 @@ namespace Camilla.Parser {
          * Delete comment from source code and save code without comment.
          * @param filePath file path to the code to delete the comment
          */
-        public void deleteComment (string filePath) {
+        public bool deleteComment (string filePath) {
+            bool headerIsCStyleComment = false;
             this.filePath = filePath;
             if (!Core.File.canRead (filePath)) {
-                return;
+                return result;
             }
 
             string fileContens = fileToStr (filePath);
@@ -70,6 +71,9 @@ namespace Camilla.Parser {
                     }
 
                     if (transitionStartCStyleCommentIfNeeded ()) {
+                        if (codeWithoutComment.length == 0) {
+                            headerIsCStyleComment = true;
+                        }
                         continue;
                     }
 
@@ -77,7 +81,7 @@ namespace Camilla.Parser {
                         continue;
                     }
 
-                    if (Objects.nonNull (prevChar)) {
+                    if (prevChar != '\0') {
                         codeWithoutComment += prevChar.to_string ();
                     }
                     transitionStartStringLiteralIfNeeded ();
@@ -85,10 +89,21 @@ namespace Camilla.Parser {
                     prevChar = nowChar;
                 }
             }
-            if (Objects.nonNull (prevChar) && (state == STATE.CODE || state == STATE.STRING_LITERAL)) {
+
+            if (prevChar != '\0' && (state == STATE.CODE || state == STATE.STRING_LITERAL)) {
                 codeWithoutComment += prevChar.to_string ();
             }
+
+            /*
+             * If the source code was started with a C-style comment,
+             * an unnecessary line break remains in the string for the first character.
+             * So, delete first line feed.
+             */
+            if (headerIsCStyleComment) {
+                codeWithoutComment = codeWithoutComment.substring (1, codeWithoutComment.length - 1);
+            }
             result = true;
+            return result;
         }
 
         /**
@@ -100,8 +115,8 @@ namespace Camilla.Parser {
                 if (prevprevChar != '\\' && prevChar == '*' && nowChar == '/') {
                     state = STATE.CODE;
 
-                    long offset = codeWithoutComment.length - 1;
-                    if (offset >= 0 && codeWithoutComment.substring (offset) == "\n") {
+                    int offset = codeWithoutComment.last_index_of_char ('\n');
+                    if (offset >= 0) {
                         codeWithoutComment = codeWithoutComment.substring (0, offset);
                     }
                     resetPreAndPrePreChar ();
@@ -212,12 +227,11 @@ namespace Camilla.Parser {
 
         /**
          * Return source code without comment.
-         * @return source code without comment or error message.
+         * @return source code without comment or null.
          *
          */
         public string getCodeWithoutComment () {
-            return result ? codeWithoutComment :
-                   "Can't delete comment from source code.(e.g. No read permission)\n";
+            return result ? codeWithoutComment : null;
         }
     }
 }

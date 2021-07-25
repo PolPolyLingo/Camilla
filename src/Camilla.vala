@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 using Camilla.Core;
+using Camilla.Model;
 using Camilla.Parser;
 
 namespace Camilla {
@@ -41,6 +42,7 @@ namespace Camilla {
                               author ("Naohiro CHIKAMATSU <n.chika156@gmail.com>").
                               contact ("https://github.com/nao1215/Camilla").
                               build ();
+            targetFileList = new List<string>();
         }
 
         /**
@@ -51,32 +53,79 @@ namespace Camilla {
             if (!initialize (args)) {
                 return EXIT_STATUS.FAILURE;
             }
-            showCodeWithoutComment ();
+            parse ();
 
             return EXIT_STATUS.SUCCESS;
         }
 
         /**
-         *
+         * TBD: Change this function name
          */
-        private void showCodeWithoutComment () {
+        private void parse () {
+            if (argParser.hasOption ("c")) {
+                countLineOfCode ();
+                return;
+            }
+
+            DeleteComment dc = new DeleteComment ();
+
             foreach (string file in targetFileList) {
                 if (!Core.File.isFile (file)) {
                     stdout.printf ("[%s]\n", Objects.isNull (file) ? "Unknown" : file);
                     stdout.printf ("This is not source code file.\n");
                     continue;
                 }
-
-                DeleteComment dc = new DeleteComment ();
-                dc.deleteComment (file);
-                stdout.printf ("[%s]\n", file);
-
-                stdout.printf (dc.getCodeWithoutComment ());
-
+                if (!dc.deleteComment (file)) {
+                    stdout.printf ("Can't parse source code.");
+                    continue;
+                }
+                stdout.printf ("%s:Not implementation.", file);
+                SourceCode sc = new SourceCode (file, dc.getCodeWithoutComment ());
                 if (file != targetFileList.last ().data) {
                     stdout.printf ("\n");
                 }
             }
+        }
+
+        /** Count Line of Code. */
+        private void countLineOfCode () {
+            List<LineOfCode> locList = new List<LineOfCode> ();
+
+            foreach (string file in targetFileList) {
+                if (Core.File.extension (file) != ".vala") {
+                    continue;
+                }
+                if (!Core.File.isFile (file)) {
+                    continue;
+                }
+                locList.append (CountLineOfCode.count (file));
+            }
+
+            var sum = calcSumLineOfCode (locList);
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+            stdout.printf ("File                                        blank        comment           code\n");
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+            foreach (var loc in locList) {
+                stdout.printf ("%-44s%5u        %7u         %6u\n",
+                               loc.getFilePath (), loc.getBlank (), loc.getComment (), loc.getCode ());
+            }
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+            stdout.printf ("%-44s%5u        %7u         %6u\n",
+                           sum.getFilePath (), sum.getBlank (), sum.getComment (), sum.getCode ());
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+        }
+
+        private LineOfCode calcSumLineOfCode (List<LineOfCode> locList) {
+            uint blankCnt = 0;
+            uint commentCnt = 0;
+            uint codeCnt = 0;
+
+            foreach (var loc in locList) {
+                blankCnt += loc.getBlank ();
+                commentCnt += loc.getComment ();
+                codeCnt += loc.getCode ();
+            }
+            return new LineOfCode ("Sum", blankCnt, commentCnt, codeCnt);
         }
 
         /**
@@ -87,7 +136,10 @@ namespace Camilla {
         private bool initialize (string[] args) {
             setOptions ();
             argParser.parse (args);
-            setTargetFileList ();
+            if (!decideTargetFileList ()) {
+                argParser.usage ();
+                return false;
+            }
 
             if (argParser.hasOption ("v")) {
                 argParser.showVersion ();
@@ -113,10 +165,26 @@ namespace Camilla {
         /**
          * Set file list to be checked.
          */
-        private void setTargetFileList () {
-            foreach (string str in argParser.copyArgWithoutCmdNameAndOptions ()) {
-                targetFileList.append (str);
+        private bool decideTargetFileList () {
+            if (argParser.copyArgWithoutCmdNameAndOptions ().length () == 0) {
+                targetFileList = Core.File.walk (".");
+                targetFileList.sort (strcmp);
+                return true;
             }
+
+            foreach (var path in argParser.copyArgWithoutCmdNameAndOptions ()) {
+                if (Core.File.isFile (path)) {
+                    targetFileList.append (path);
+                    return true;
+                }
+                if (Core.File.isDir (path)) {
+                    targetFileList = Core.File.walk (path);
+                    targetFileList.sort (strcmp);
+                    return true;
+                }
+                break;
+            }
+            return false;
         }
     }
 }

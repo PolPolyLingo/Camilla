@@ -5,6 +5,11 @@ app_files = [
           'core/Stdout.vala',
           'core/String.vala',
           'parser/DeleteComment.vala',
+          'parser/CountLineOfCode.vala',
+          'model/Class.vala',
+          'model/Function.vala',
+          'model/SourceCode.vala',
+          'model/LineOfCode.vala',
           'Application.vala',
           'Camilla.vala'
           ),
@@ -14,7 +19,7 @@ dependencies = [
     dependency('glib-2.0', version: '>=2.62'),
     dependency('gobject-2.0'),
     dependency('gio-2.0'),
-    #dependency('gee-0.8'),
+    dependency('gee-0.8'),
     #meson.get_compiler('vala').find_library('linux'),
     meson.get_compiler('vala').find_library('posix'),
 ]
@@ -28,4 +33,4 @@ executable(meson.project_name(),
            app_files,
            dependencies: [camilla_deps],
            install : true,
-           install_dir : '/usr/local/bin' )
+           install_dir : '/usr/local/bin')
