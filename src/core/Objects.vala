@@ -23,8 +23,7 @@ namespace Camilla.Core {
          * @param Object to be checked.
          * @return true: object is null, false: object is not null.
          */
-        public static bool isNull <T>(T obj)
-        {
+        public static bool isNull<T>(T obj) {
             return obj == null;
         }
 
@@ -33,9 +32,8 @@ namespace Camilla.Core {
          * @param Object to be checked.
          * @return true: object is not null, false: object is null.
          */
-        public static bool nonNull <T>(T obj)
-        {
-            return !isNull(obj);
+        public static bool nonNull<T>(T obj) {
+            return !isNull (obj);
         }
     }
 }

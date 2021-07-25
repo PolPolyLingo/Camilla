@@ -33,24 +33,23 @@ namespace Camilla.Core {
         /** Contact information (e.g. email, GitHub URL, etc.)*/
         private string contact;
         /** Application option list. */
-        private List <Option> optionList;
+        private List<Option> optionList;
         /** Argument without Options (e.g. test in "$ command -h -d test") */
-        private List <string> argListWithoutOptions;
+        private List<string> argListWithoutOptions;
 
         /**
          * Private constructor. Call from Builder class.
          * @param Builder Builder of ArgParser class
          */
-        private ArgParser(Builder builder)
-        {
-            this.appName     = builder.appName;
-            this.appArg      = builder.appArg;
+        private ArgParser (Builder builder) {
+            this.appName = builder.appName;
+            this.appArg = builder.appArg;
             this.description = builder.desc;
-            this.version     = builder.ver;
-            this.author      = builder.appAuthor;
-            this.contact     = builder.appContact;
-            this.optionList  = new List <Option> ();
-            this.argListWithoutOptions = new List <string>();
+            this.version = builder.ver;
+            this.author = builder.appAuthor;
+            this.contact = builder.appContact;
+            this.optionList = new List<Option> ();
+            this.argListWithoutOptions = new List<string>();
         }
 
         /**
@@ -59,43 +58,39 @@ namespace Camilla.Core {
          * @param longOption Long option string.
          * @param description Option description.
          */
-        public void addOption(string shortOption, string longOption, string description)
-        {
-            optionList.append(new Option(shortOption, longOption, description));
+        public void addOption (string shortOption, string longOption, string description) {
+            optionList.append (new Option (shortOption, longOption, description));
         }
 
         /**
          * Show usage of this application on STDOUT.
          */
-        public void usage()
-        {
-            showVersion();
-            stdout.printf("\n");
-            showDescriptionIfNeeded();
-            stdout.printf("\n");
-            showUsage();
-            stdout.printf("\n");
-            showOptions();
-            stdout.printf("\n");
-            showContactInfo();
+        public void usage () {
+            showVersion ();
+            stdout.printf ("\n");
+            showDescriptionIfNeeded ();
+            stdout.printf ("\n");
+            showUsage ();
+            stdout.printf ("\n");
+            showOptions ();
+            stdout.printf ("\n");
+            showContactInfo ();
         }
 
         /**
          * Show version of this appliction on STDOUT.
          */
-        public void showVersion()
-        {
-            stdout.printf("%s version %s\n", appName, version);
+        public void showVersion () {
+            stdout.printf ("%s version %s\n", appName, version);
         }
 
         /**
          * Parse the option string.
          * @param args command line arguments.
          */
-        public void parse(string[] args)
-        {
-            validOptionsIfNeeded(args);
-            getArgListWithoutOptions(args);
+        public void parse (string[] args) {
+            validOptionsIfNeeded (args);
+            getArgListWithoutOptions (args);
         }
 
         /**
@@ -103,13 +98,10 @@ namespace Camilla.Core {
          * @param shortOption Short option (Only one characther)
          * @return true: option is valid, false: option is invalid.
          */
-        public bool hasOption(string shortOption)
-        {
-            foreach(Option option in optionList)
-            {
-                if(option.GetShortOption() == shortOption)
-                {
-                    return option.IsValid();
+        public bool hasOption (string shortOption) {
+            foreach (Option option in optionList) {
+                if (option.GetShortOption () == shortOption) {
+                    return option.IsValid ();
                 }
             }
             return false;
@@ -119,24 +111,19 @@ namespace Camilla.Core {
          * Copy commandline arguments without application name and options.
          * @return commandline arguments without application name and options.
          */
-        public List <weak string> copyArgWithoutCmdNameAndOptions()
-        {
-            return argListWithoutOptions.copy();
+        public List<weak string> copyArgWithoutCmdNameAndOptions () {
+            return argListWithoutOptions.copy ();
         }
 
         /**
          * Parse the arguments and enable options if necessary.
          * @param args command line arguments.
          */
-        private void validOptionsIfNeeded(string[] args)
-        {
-            foreach(Option option in optionList)
-            {
-                foreach(string arg in args)
-                {
-                    if(isOpt(option, arg))
-                    {
-                        option.Enable();
+        private void validOptionsIfNeeded (string[] args) {
+            foreach (Option option in optionList) {
+                foreach (string arg in args) {
+                    if (isOpt (option, arg)) {
+                        option.Enable ();
                         break;
                     }
                 }
@@ -147,27 +134,21 @@ namespace Camilla.Core {
          * Create an argument string excluding command name and options.
          * @param args command line arguments.
          */
-        private void getArgListWithoutOptions(string[] args)
-        {
-            foreach(string arg in args)
-            {
-                if(arg.contains(appName) && Core.File.basename(arg) == appName)
-                {
+        private void getArgListWithoutOptions (string[] args) {
+            foreach (string arg in args) {
+                if (arg.contains (appName) && Core.File.basename (arg) == appName) {
                     continue;
                 }
 
                 bool optionFound = false;
-                foreach(Option option in optionList)
-                {
-                    if(isOpt(option, arg))
-                    {
+                foreach (Option option in optionList) {
+                    if (isOpt (option, arg)) {
                         optionFound = true;
                         break;
                     }
                 }
-                if(!optionFound)
-                {
-                    argListWithoutOptions.append(arg);
+                if (!optionFound) {
+                    argListWithoutOptions.append (arg);
                 }
             }
         }
@@ -177,20 +158,15 @@ namespace Camilla.Core {
          * @param opt Option information.
          * @param arg commandline argument string.
          */
-        private bool isOpt(Option opt, string arg)
-        {
-            if(arg.contains("-" + opt.GetShortOption()))
-            {
-                if(arg.length == "-".length + opt.GetShortOption().length)
-                {
+        private bool isOpt (Option opt, string arg) {
+            if (arg.contains ("-" + opt.GetShortOption ())) {
+                if (arg.length == "-".length + opt.GetShortOption ().length) {
                     return true;
                 }
             }
 
-            if(arg.contains("--" + opt.GetLongOption()))
-            {
-                if(arg.length == "--".length + opt.GetLongOption().length)
-                {
+            if (arg.contains ("--" + opt.GetLongOption ())) {
+                if (arg.length == "--".length + opt.GetLongOption ().length) {
                     return true;
                 }
             }
@@ -201,51 +177,44 @@ namespace Camilla.Core {
          * Show description section on STDIN.
          * If the description is empty, it will not be displayed.
          */
-        private void showDescriptionIfNeeded()
-        {
-            if(String.isNullOrEmpty(description))
-            {
+        private void showDescriptionIfNeeded () {
+            if (String.isNullOrEmpty (description)) {
                 return;
             }
-            stdout.printf("[Description]\n");
-            string[] descs = String.splitByNum(description, 78);
-            foreach(string str in descs)
-            {
-                stdout.printf("  %s\n", str);
+            stdout.printf ("[Description]\n");
+            string[] descs = String.splitByNum (description, 78);
+            foreach (string str in descs) {
+                stdout.printf ("  %s\n", str);
             }
         }
 
         /**
          *  Show usage section on STDIN.
          */
-        private void showUsage()
-        {
-            stdout.printf("[Usage]\n");
-            stdout.printf("  %s [options] %s\n", appName, appArg);
+        private void showUsage () {
+            stdout.printf ("[Usage]\n");
+            stdout.printf ("  %s [options] %s\n", appName, appArg);
         }
 
         /**
          * Show usage options on STDIN.
          */
-        private void showOptions()
-        {
-            stdout.printf("[Options]\n");
-            foreach(Option option in optionList)
-            {
-                stdout.printf("  %-18s", "-" + option.GetShortOption() + ", --" +
-                              option.GetLongOption());
-                stdout.printf(" %s\n", option.GetDescription());
+        private void showOptions () {
+            stdout.printf ("[Options]\n");
+            foreach (Option option in optionList) {
+                stdout.printf ("  %-18s", "-" + option.GetShortOption () + ", --" +
+                               option.GetLongOption ());
+                stdout.printf (" %s\n", option.GetDescription ());
             }
         }
 
         /**
          * Show contact information for application developers.
          */
-        private void showContactInfo()
-        {
-            stdout.printf("[Contact]\n");
-            stdout.printf("  Author  : %s\n", author);
-            stdout.printf("  Web Site: %s\n", contact);
+        private void showContactInfo () {
+            stdout.printf ("[Contact]\n");
+            stdout.printf ("  Author  : %s\n", author);
+            stdout.printf ("  Web Site: %s\n", contact);
         }
 
         /** Gof Builder pattern for ArgParse constructor. */
@@ -257,31 +226,42 @@ namespace Camilla.Core {
              */
             /** Application name */
             private string _appName;
-            public string appName { get { return _appName; } }
+            public string appName { get {
+                                        return _appName;
+                                    } }
             /** Application argument information for help message. */
             private string _appArg;
-            public string appArg { get { return _appArg; } }
+            public string appArg { get {
+                                       return _appArg;
+                                   } }
             /** Application description for help message. */
             private string _desc;
-            public string desc { get { return _desc; } }
+            public string desc { get {
+                                     return _desc;
+                                 } }
             /** Application version */
             private string _ver;
-            public string ver { get { return _ver; } }
+            public string ver { get {
+                                    return _ver;
+                                } }
             /** Application's author (developer) */
             private string _appAuthor;
-            public string appAuthor { get { return _appAuthor; } }
+            public string appAuthor { get {
+                                          return _appAuthor;
+                                      } }
             /** Contact information (e.g. email, GitHub URL, etc.)*/
             private string _appContact;
-            public string appContact { get { return _appContact; } }
+            public string appContact { get {
+                                           return _appContact;
+                                       } }
 
             /** Constructor */
-            public Builder()
-            {
-                this._appName    = "";
-                this._appArg     = "";
-                this._desc       = "";
-                this._ver        = "";
-                this._appAuthor  = "";
+            public Builder () {
+                this._appName = "";
+                this._appArg = "";
+                this._desc = "";
+                this._ver = "";
+                this._appAuthor = "";
                 this._appContact = "";
             }
 
@@ -289,8 +269,7 @@ namespace Camilla.Core {
              * Set application name.
              * @param appName application name string (e.g. cat)
              */
-            public Builder applicationName(string appName)
-            {
+            public Builder applicationName (string appName) {
                 this._appName = appName;
                 return this;
             }
@@ -300,8 +279,7 @@ namespace Camilla.Core {
              * @param appArg Application argument Inforamtion.
              *               (e.g. directory_path in "$ ddf [Options] directory_path")
              */
-            public Builder applicationArgument(string appArg)
-            {
+            public Builder applicationArgument (string appArg) {
                 this._appArg = appArg;
                 return this;
             }
@@ -310,8 +288,7 @@ namespace Camilla.Core {
              * Set application description.
              * @param desc application description string.
              */
-            public Builder description(string desc)
-            {
+            public Builder description (string desc) {
                 this._desc = desc;
                 return this;
             }
@@ -320,8 +297,7 @@ namespace Camilla.Core {
              * Set application version.
              * @param ver application version string (Semantic Versioning format).
              */
-            public Builder version(string ver)
-            {
+            public Builder version (string ver) {
                 this._ver = ver;
                 return this;
             }
@@ -330,8 +306,7 @@ namespace Camilla.Core {
              * Set application author.
              * @param author application author string.
              */
-            public Builder author(string author)
-            {
+            public Builder author (string author) {
                 this._appAuthor = author;
                 return this;
             }
@@ -340,8 +315,7 @@ namespace Camilla.Core {
              * Set application developer contact information.
              * @param contact application developer contact information(e.g. GitHub URL)
              */
-            public Builder contact(string contact)
-            {
+            public Builder contact (string contact) {
                 this._appContact = contact;
                 return this;
             }
@@ -349,9 +323,8 @@ namespace Camilla.Core {
             /**
              * Constructor for ArgParser class.
              */
-            public ArgParser build()
-            {
-                return new ArgParser(this);
+            public ArgParser build () {
+                return new ArgParser (this);
             }
         }
     }
@@ -376,20 +349,18 @@ namespace Camilla.Core {
          * @param longOption Long option string.
          * @param description Option description.
          */
-        public Option(string shortOption, string longOption,  string description)
-        {
+        public Option (string shortOption, string longOption, string description) {
             this.shortOption = shortOption;
-            this.longOption  = longOption;
+            this.longOption = longOption;
             this.description = description;
-            this.enable      = false;
+            this.enable = false;
         }
 
         /**
          * Return short option.
          * @return Short option string.
          */
-        public string GetShortOption()
-        {
+        public string GetShortOption () {
             return shortOption;
         }
 
@@ -397,8 +368,7 @@ namespace Camilla.Core {
          * Return long option.
          * @return Long option string.
          */
-        public string GetLongOption()
-        {
+        public string GetLongOption () {
             return longOption;
         }
 
@@ -406,16 +376,14 @@ namespace Camilla.Core {
          * Return description for option.
          * @return String of description
          */
-        public string GetDescription()
-        {
+        public string GetDescription () {
             return description;
         }
 
         /**
          * Enable option.
          */
-        public void Enable()
-        {
+        public void Enable () {
             enable = true;
         }
 
@@ -423,8 +391,7 @@ namespace Camilla.Core {
          * Returns whether the option is valid.
          * @return true: option is valid, false: option is invalid.
          */
-        public bool IsValid()
-        {
+        public bool IsValid () {
             return enable;
         }
     }

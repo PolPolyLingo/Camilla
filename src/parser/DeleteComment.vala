@@ -25,9 +25,9 @@ namespace Camilla.Parser {
         /** Source code file path.*/
         private string filePath;
         /** Now parsing character */
-        private unichar nowChar      = '\0';
+        private unichar nowChar = '\0';
         /** Previous character */
-        private unichar prevChar     = '\0';
+        private unichar prevChar = '\0';
         /** Two times previous character */
         private unichar prevprevChar = '\0';
         /** source code parse status */
@@ -37,67 +37,56 @@ namespace Camilla.Parser {
 
         /** Parsing code state */
         enum STATE {
-            CODE,              /** Source code without string literal */
-            C_STYLE_COMMENT,   /** C style commet ("/" "*" + "*" "/") */
+            CODE, /** Source code without string literal */
+            C_STYLE_COMMENT, /** C style commet ("/" "*" + "*" "/") */
             CPP_STYLE_COMMENT, /** C++ style commet("//") */
-            STRING_LITERAL     /** String enclosed in double quotes */
+            STRING_LITERAL /** String enclosed in double quotes */
         }
 
         /**
          * Delete comment from source code and save code without comment.
          * @param filePath file path to the code to delete the comment
          */
-        public void deleteComment(string filePath)
-        {
+        public void deleteComment (string filePath) {
             this.filePath = filePath;
-            if(!Core.File.canRead(filePath))
-            {
+            if (!Core.File.canRead (filePath)) {
                 return;
             }
 
-            string fileContens = fileToStr(filePath);
-            for(int i = 0; i < fileContens.length; i++)
-            {
-                if(fileContens.valid_char(i))
-                {
-                    nowChar = fileContens.get_char(i);
-                    if(skipEndOfCStyleComment())
-                    {
+            string fileContens = fileToStr (filePath);
+            for (int i = 0; i < fileContens.length; i++) {
+                if (fileContens.valid_char (i)) {
+                    nowChar = fileContens.get_char (i);
+                    if (skipEndOfCStyleComment ()) {
                         continue;
                     }
 
-                    if(skipCPlusPlusComment())
-                    {
+                    if (skipCPlusPlusComment ()) {
                         continue;
                     }
 
-                    if(skipEndOfStringLiteral())
-                    {
+                    if (skipEndOfStringLiteral ()) {
                         continue;
                     }
 
-                    if(transitionStartCStyleCommentIfNeeded())
-                    {
+                    if (transitionStartCStyleCommentIfNeeded ()) {
                         continue;
                     }
 
-                    if(transitionStartCPlusPlusStyleCommentIfNeeded())
-                    {
+                    if (transitionStartCPlusPlusStyleCommentIfNeeded ()) {
                         continue;
                     }
 
-                    if(Objects.nonNull(prevChar))
-                    {
-                        codeWithoutComment += prevChar.to_string();
+                    if (Objects.nonNull (prevChar)) {
+                        codeWithoutComment += prevChar.to_string ();
                     }
-                    transitionStartStringLiteralIfNeeded();
+                    transitionStartStringLiteralIfNeeded ();
                     prevprevChar = prevChar;
-                    prevChar     = nowChar;
+                    prevChar = nowChar;
                 }
             }
-            if(Objects.nonNull(prevChar)  && (state == STATE.CODE || state == STATE.STRING_LITERAL))
-            {
-                codeWithoutComment += prevChar.to_string();
+            if (Objects.nonNull (prevChar) && (state == STATE.CODE || state == STATE.STRING_LITERAL)) {
+                codeWithoutComment += prevChar.to_string ();
             }
             result = true;
         }
@@ -106,29 +95,21 @@ namespace Camilla.Parser {
          * Skip end of C style comment.
          * @result true: can parse next character, false: can not parse next character.
          */
-        private bool skipEndOfCStyleComment()
-        {
-            if(state == STATE.C_STYLE_COMMENT)
-            {
-                if(prevprevChar != '\\' && prevChar == '*' && nowChar == '/')
-                {
+        private bool skipEndOfCStyleComment () {
+            if (state == STATE.C_STYLE_COMMENT) {
+                if (prevprevChar != '\\' && prevChar == '*' && nowChar == '/') {
                     state = STATE.CODE;
 
-                    long offset = codeWithoutComment.length -1;
-                    if(offset >= 0 && codeWithoutComment.substring(offset) == "\n")
-                    {
-                        codeWithoutComment = codeWithoutComment.substring(0, offset);
+                    long offset = codeWithoutComment.length - 1;
+                    if (offset >= 0 && codeWithoutComment.substring (offset) == "\n") {
+                        codeWithoutComment = codeWithoutComment.substring (0, offset);
                     }
-                    resetPreAndPrePreChar();
-                }
-                else if(nowChar == '\n')
-                {
-                    resetPreAndPrePreChar();
-                }
-                else
-                {
+                    resetPreAndPrePreChar ();
+                } else if (nowChar == '\n') {
+                    resetPreAndPrePreChar ();
+                } else {
                     prevprevChar = prevChar;
-                    prevChar     = nowChar;
+                    prevChar = nowChar;
                 }
                 return true;
             }
@@ -139,20 +120,16 @@ namespace Camilla.Parser {
          * Skip C++ style comment(e.g. //).
          * @result true: can parse next character, false: can not parse next character.
          */
-        private bool skipCPlusPlusComment()
-        {
-            if(state == STATE.CPP_STYLE_COMMENT)
-            {
-                if(nowChar == '\n')
-                {
+        private bool skipCPlusPlusComment () {
+            if (state == STATE.CPP_STYLE_COMMENT) {
+                if (nowChar == '\n') {
                     state = STATE.CODE;
 
-                    long offset = codeWithoutComment.length -1;
-                    if(offset >= 0 && codeWithoutComment.substring(offset) != "\n")
-                    {
-                        codeWithoutComment += nowChar.to_string();
+                    long offset = codeWithoutComment.length - 1;
+                    if (offset >= 0 && codeWithoutComment.substring (offset) != "\n") {
+                        codeWithoutComment += nowChar.to_string ();
                     }
-                    resetPreAndPrePreChar();
+                    resetPreAndPrePreChar ();
                 }
                 return true;
             }
@@ -163,13 +140,11 @@ namespace Camilla.Parser {
          * Skip to the end of the string literal(e.g. "this string is string literal").
          * @result true: can parse next character, false: can not parse next character.
          */
-        private bool skipEndOfStringLiteral()
-        {
-            if(prevChar != '\\' && nowChar == DOUBLE_QUOTE && state == STATE.STRING_LITERAL)
-            {
+        private bool skipEndOfStringLiteral () {
+            if (prevChar != '\\' && nowChar == DOUBLE_QUOTE && state == STATE.STRING_LITERAL) {
                 state = STATE.CODE;
-                codeWithoutComment += prevChar.to_string();
-                prevprevChar        = prevChar;
+                codeWithoutComment += prevChar.to_string ();
+                prevprevChar = prevChar;
                 prevChar = nowChar;
                 return true;
             }
@@ -180,12 +155,10 @@ namespace Camilla.Parser {
          * If C-style comment has started, the state transitions.
          * @result true: can parse next character, false: can not parse next character.
          */
-        private bool transitionStartCStyleCommentIfNeeded()
-        {
-            if(prevprevChar != '\\' && prevChar == '/' && nowChar == '*' && state == STATE.CODE)
-            {
+        private bool transitionStartCStyleCommentIfNeeded () {
+            if (prevprevChar != '\\' && prevChar == '/' && nowChar == '*' && state == STATE.CODE) {
                 state = STATE.C_STYLE_COMMENT;
-                resetPreAndPrePreChar();
+                resetPreAndPrePreChar ();
                 return true;
             }
             return false;
@@ -195,12 +168,10 @@ namespace Camilla.Parser {
          * If C++ comment has started, the state transitions.
          * @result true: can parse next character, false: can not parse next character.
          */
-        private bool transitionStartCPlusPlusStyleCommentIfNeeded()
-        {
-            if(prevprevChar != '\\' && prevChar == '/' && nowChar == '/' && state == STATE.CODE)
-            {
+        private bool transitionStartCPlusPlusStyleCommentIfNeeded () {
+            if (prevprevChar != '\\' && prevChar == '/' && nowChar == '/' && state == STATE.CODE) {
                 state = STATE.CPP_STYLE_COMMENT;
-                resetPreAndPrePreChar();
+                resetPreAndPrePreChar ();
                 return true;
             }
             return false;
@@ -210,10 +181,8 @@ namespace Camilla.Parser {
          * If string enclosed in double quotes has started, the state transitions.
          * @result true: can parse next character, false: can not parse next character.
          */
-        private void transitionStartStringLiteralIfNeeded()
-        {
-            if(nowChar == DOUBLE_QUOTE)
-            {
+        private void transitionStartStringLiteralIfNeeded () {
+            if (nowChar == DOUBLE_QUOTE) {
                 state = STATE.STRING_LITERAL;
             }
         }
@@ -223,25 +192,22 @@ namespace Camilla.Parser {
          * @param filePath convert target file path.
          * @note This method does not check whether file exists and read.
          */
-        private string fileToStr(string filePath)
-        {
-            char       buf[2048];
-            string     str    = "";
+        private string fileToStr (string filePath) {
+            char buf[2048];
+            string str = "";
 
-            FileStream stream = FileStream.open(filePath, "r");
+            FileStream stream = FileStream.open (filePath, "r");
 
-            while(stream.gets(buf) != null)
-            {
+            while (stream.gets (buf) != null) {
                 str = str + ((string) buf);
             }
             return str;
         }
 
         /** Set '\0' for prevChar and preprevChar. */
-        private void resetPreAndPrePreChar()
-        {
+        private void resetPreAndPrePreChar () {
             prevprevChar = '\0';
-            prevChar     = '\0';
+            prevChar = '\0';
         }
 
         /**
@@ -249,8 +215,7 @@ namespace Camilla.Parser {
          * @return source code without comment or error message.
          *
          */
-        public string getCodeWithoutComment()
-        {
+        public string getCodeWithoutComment () {
             return result ? codeWithoutComment :
                    "Can't delete comment from source code.(e.g. No read permission)\n";
         }

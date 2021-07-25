@@ -21,7 +21,7 @@ namespace Camilla {
         /** Argument information. */
         private ArgParser argParser;
         /** File list to be checked.  */
-        private List <string> targetFileList;
+        private List<string> targetFileList;
 
         /**
          * Application exit status.
@@ -32,29 +32,26 @@ namespace Camilla {
         }
 
         /** Constructor. */
-        public Camilla()
-        {
-            this.argParser = new ArgParser.Builder().
-                             applicationName("camilla").
-                             applicationArgument("FILE_NAME or DIRECTORY_NAME or NOTHING").
-                             description("camilla is static analysis tool for vala language.").
-                             version("0.1.0").
-                             author("Naohiro CHIKAMATSU <n.chika156@gmail.com>").
-                             contact("https://github.com/nao1215/Camilla").
-                             build();
+        public Camilla () {
+            this.argParser = new ArgParser.Builder ().
+                              applicationName ("camilla").
+                              applicationArgument ("FILE_NAME or DIRECTORY_NAME or NOTHING").
+                              description ("camilla is static analysis tool for vala language.").
+                              version ("0.1.0").
+                              author ("Naohiro CHIKAMATSU <n.chika156@gmail.com>").
+                              contact ("https://github.com/nao1215/Camilla").
+                              build ();
         }
 
         /**
          * Start camilla that is static analysis tool for vala language.
          * @param commandline arguments.
          */
-        public int run(string[] args)
-        {
-            if(!initialize(args))
-            {
+        public int run (string[] args) {
+            if (!initialize (args)) {
                 return EXIT_STATUS.FAILURE;
             }
-            showCodeWithoutComment();
+            showCodeWithoutComment ();
 
             return EXIT_STATUS.SUCCESS;
         }
@@ -62,26 +59,22 @@ namespace Camilla {
         /**
          *
          */
-        private void showCodeWithoutComment()
-        {
-            foreach(string file in targetFileList)
-            {
-                if(!Core.File.isFile(file))
-                {
-                    stdout.printf("[%s]\n", Objects.isNull(file) ? "Unknown" : file);
-                    stdout.printf("This is not source code file.\n");
+        private void showCodeWithoutComment () {
+            foreach (string file in targetFileList) {
+                if (!Core.File.isFile (file)) {
+                    stdout.printf ("[%s]\n", Objects.isNull (file) ? "Unknown" : file);
+                    stdout.printf ("This is not source code file.\n");
                     continue;
                 }
 
-                DeleteComment dc = new DeleteComment();
-                dc.deleteComment(file);
-                stdout.printf("[%s]\n", file);
+                DeleteComment dc = new DeleteComment ();
+                dc.deleteComment (file);
+                stdout.printf ("[%s]\n", file);
 
-                stdout.printf(dc.getCodeWithoutComment());
+                stdout.printf (dc.getCodeWithoutComment ());
 
-                if(file != targetFileList.last().data)
-                {
-                    stdout.printf("\n");
+                if (file != targetFileList.last ().data) {
+                    stdout.printf ("\n");
                 }
             }
         }
@@ -91,21 +84,18 @@ namespace Camilla {
          * @param commandline arguments.
          * @return true: initialize is success, false: need to close the application.
          */
-        private bool initialize(string[] args)
-        {
-            setOptions();
-            argParser.parse(args);
-            setTargetFileList();
+        private bool initialize (string[] args) {
+            setOptions ();
+            argParser.parse (args);
+            setTargetFileList ();
 
-            if(argParser.hasOption("v"))
-            {
-                argParser.showVersion();
+            if (argParser.hasOption ("v")) {
+                argParser.showVersion ();
                 return false;
             }
 
-            if(argParser.hasOption("h"))
-            {
-                argParser.usage();
+            if (argParser.hasOption ("h")) {
+                argParser.usage ();
                 return false;
             }
             return true;
@@ -114,20 +104,18 @@ namespace Camilla {
         /**
          * Set application options.
          */
-        private void setOptions()
-        {
-            argParser.addOption("h", "help", "Show usage.");
-            argParser.addOption("v", "version", "Show dscc command version.");
+        private void setOptions () {
+            argParser.addOption ("c", "count", "Count line of codes.");
+            argParser.addOption ("h", "help", "Show usage.");
+            argParser.addOption ("v", "version", "Show dscc command version.");
         }
 
         /**
          * Set file list to be checked.
          */
-        private void setTargetFileList()
-        {
-            foreach(string str in argParser.copyArgWithoutCmdNameAndOptions())
-            {
-                targetFileList.append(str);
+        private void setTargetFileList () {
+            foreach (string str in argParser.copyArgWithoutCmdNameAndOptions ()) {
+                targetFileList.append (str);
             }
         }
     }

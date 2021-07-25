@@ -16,10 +16,9 @@
 
 namespace Camilla {
     public class Application : GLib.Application  {
-        public static int main(string[] args)
-        {
-            Camilla camilla = new Camilla();
-            return camilla.run(args);
+        public static int main (string[] args) {
+            Camilla camilla = new Camilla ();
+            return camilla.run (args);
         }
     }
 }

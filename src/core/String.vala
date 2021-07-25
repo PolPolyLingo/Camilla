@@ -23,9 +23,8 @@ namespace Camilla.Core {
          * @param str string for checking.
          * @return true: string is null or empty, false: otherwise
          */
-        public static bool isNullOrEmpty(string str)
-        {
-            return (Objects.isNull(str)) || (str == "");
+        public static bool isNullOrEmpty (string str) {
+            return (Objects.isNull (str)) || (str == "");
         }
 
         /**
@@ -34,22 +33,18 @@ namespace Camilla.Core {
          * @param str Character string to be splited
          * @return Array of split string.
          */
-        public static string[] splitByNum(string str, uint num)
-        {
-            if(Objects.isNull(str) || num == 0)
-            {
+        public static string[] splitByNum (string str, uint num) {
+            if (Objects.isNull (str) || num == 0) {
                 return new string[1];
             }
 
-            string[] strs = { };
-            string   tmp  = "";
-            for(int i = 0; i < str.length; i++)
-            {
-                tmp += str.get_char(i).to_string();
-                if(i != 0 && i % num == 0)
-                {
+            string[] strs = {};
+            string tmp = "";
+            for (int i = 0; i < str.length; i++) {
+                tmp += str.get_char (i).to_string ();
+                if (i != 0 && i % num == 0) {
                     strs += tmp;
-                    tmp   = "";
+                    tmp = "";
                 }
             }
             strs += tmp;
