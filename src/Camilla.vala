@@ -71,13 +71,8 @@ namespace Camilla {
             DeleteComment dc = new DeleteComment ();
 
             foreach (string file in targetFileList) {
-                if (!Core.File.isFile (file)) {
-                    stdout.printf ("[%s]\n", Objects.isNull (file) ? "Unknown" : file);
-                    stdout.printf ("This is not source code file.\n");
-                    continue;
-                }
                 if (!dc.deleteComment (file)) {
-                    stdout.printf ("Can't parse source code.");
+                    stdout.printf ("Can't parse %s.", file);
                     continue;
                 }
                 stdout.printf ("%s:Not implementation.", file);

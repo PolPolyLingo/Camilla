@@ -103,8 +103,7 @@ namespace Camilla.Parser {
             if (!dc.deleteComment (filePath)) {
                 return new List<string>();
             }
-            string code = dc.getCodeWithoutComment ();
-            return String.toLines (code);
+            return dc.getCodeWithoutComment ();
         }
 
         /**

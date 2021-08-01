@@ -62,7 +62,7 @@ namespace Camilla.Core {
             string line = "";
 
             if (Objects.isNull (str)) {
-                return lineList;
+                return lineList.copy_deep (strdup);
             }
 
             for (int i = 0; i < str.length; i++) {
@@ -76,7 +76,7 @@ namespace Camilla.Core {
                     }
                 }
             }
-            return lineList;
+            return lineList.copy_deep (strdup);
         }
     }
 }

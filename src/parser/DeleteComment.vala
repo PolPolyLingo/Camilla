@@ -17,6 +17,10 @@
 using Camilla.Core;
 
 namespace Camilla.Parser {
+    /**
+     * DeleteComment is class that delete comment from vala source code.
+     * Source code without comments is returned as a List<string>.
+     */
     public class DeleteComment : GLib.Object {
         /** Result ehether the deletion was successful. */
         private bool result = false;
@@ -227,11 +231,11 @@ namespace Camilla.Parser {
 
         /**
          * Return source code without comment.
-         * @return source code without comment or null.
+         * @return List<string> that source code without comment or null.
          *
          */
-        public string getCodeWithoutComment () {
-            return result ? codeWithoutComment : null;
+        public List<string> getCodeWithoutComment () {
+            return result ? String.toLines (codeWithoutComment) : null;
         }
     }
 }
