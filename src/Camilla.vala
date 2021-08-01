@@ -75,11 +75,9 @@ namespace Camilla {
                     stdout.printf ("Can't parse %s.", file);
                     continue;
                 }
-                stdout.printf ("%s:Not implementation.", file);
-                // SourceCode sc = new SourceCode (file, dc.getCodeWithoutComment ());
-                if (file != targetFileList.last ().data) {
-                    stdout.printf ("\n");
-                }
+                stdout.printf ("%s:Not implementation.\n", file);
+                SourceCode sc = new SourceCode (file, dc.getCodeWithoutComment ());
+                Namespace namespace = SourceCodeParser.parse (sc);
             }
         }
 

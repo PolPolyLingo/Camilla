@@ -54,9 +54,9 @@ namespace Camilla.Parser {
             uint codeCnt = 0;
 
             foreach (var loc in locList) {
-                blankCnt += loc.getBlank ();
-                commentCnt += loc.getComment ();
-                codeCnt += loc.getCode ();
+                blankCnt += loc.blank;
+                commentCnt += loc.comment;
+                codeCnt += loc.code;
             }
             return new LineOfCode ("Sum", blankCnt, commentCnt, codeCnt);
         }
@@ -68,11 +68,11 @@ namespace Camilla.Parser {
             stdout.printf ("-------------------------------------------------------------------------------\n");
             foreach (var loc in locList) {
                 stdout.printf ("%-44s%5u        %7u         %6u\n",
-                               loc.getFilePath (), loc.getBlank (), loc.getComment (), loc.getCode ());
+                               loc.filePath, loc.blank, loc.comment, loc.code);
             }
             stdout.printf ("-------------------------------------------------------------------------------\n");
             stdout.printf ("%-44s%5u        %7u         %6u\n",
-                           sum.getFilePath (), sum.getBlank (), sum.getComment (), sum.getCode ());
+                           sum.filePath, sum.blank, sum.comment, sum.code);
             stdout.printf ("-------------------------------------------------------------------------------\n");
         }
 

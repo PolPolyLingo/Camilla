@@ -16,40 +16,32 @@
 using Camilla.Core;
 
 namespace Camilla.Model {
-    /** Class is Model class for method definition. */
-    public class Method : GLib.Object {
-        /** Method name.*/
-        private string _name;
-        public string name {
+    /** Struct is Model class for struct. */
+    public class Struct : GLib.Object {
+        /** Struct member variable. */
+        private List<Variable> _memberList;
+        public List<Variable> memberList {
             get {
-                return _name;
-            }
-        }
-        /** Method implementation. */
-        private List<string> _implementation;
-        public List<string> implementation {
-            get {
-                return _implementation;
+                return _memberList;
             }
         }
 
         /** Constructor */
-        public Method (string name, List<string> implementation) {
-            this._name = name;
-            this._implementation = implementation.copy_deep (strdup);
+        public Struct (List<Variable> memberList) {
+            this._memberList = memberList.copy_deep (Variable.copyVariable);
         }
 
         /**
-         * Deep copy method for Method class.
+         * Deep copy method for Struct class.
          * This method is used for delegate method in copy_deep().
          * @param src copy target
-         * @result copied Method class
+         * @result copied Struct class
          */
-        public static Method copyMethod (Method src) {
+        public static Struct copyStruct (Struct src) {
             if (Objects.isNull (src)) {
-                return new Method ("", new List<string>());
+                return new Struct (new List<Variable>());
             }
-            return new Method (src.name, src.implementation.copy_deep (strdup));
+            return new Struct (src.memberList.copy_deep (Variable.copyVariable));
         }
     }
 }

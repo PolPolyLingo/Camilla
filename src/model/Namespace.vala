@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Camilla.Model {
-    /** SourceCode is Model class for source code without comment. */
-    public class SourceCode : GLib.Object {
-        /** Source code file path */
-        private string _filePath;
-        public string filePath {
+    /** Class is Model class for namespace. */
+    public class Namespace : GLib.Object {
+        /** Class list in namespace. */
+        private List<Class> _classList;
+        public List<Class> classList {
             get {
-                return _filePath;
+                return _classList;
             }
         }
-        /** Source code without comment. */
-        private List<string> _code;
-        public List<string> code {
+
+        /** Struct list in namespace */
+        private List<Struct> _structList;
+        public List<Struct> structList {
             get {
-                return _code;
+                return _structList;
             }
         }
 
         /** Constructor */
-        public SourceCode (string filePath, List<string> code) {
-            this._filePath = filePath;
-            this._code = code.copy_deep (strdup);
+        public Namespace (List<Class> classList, List<Struct> structList) {
+            this._classList = classList.copy_deep (Class.copyClass);
+            this._structList = structList.copy_deep (Struct.copyStruct);
         }
     }
 }

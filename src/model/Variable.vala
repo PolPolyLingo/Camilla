@@ -16,40 +16,43 @@
 using Camilla.Core;
 
 namespace Camilla.Model {
-    /** Class is Model class for method definition. */
-    public class Method : GLib.Object {
-        /** Method name.*/
+    /**
+     * Variable is Model class for variable.
+     * This class containes variable name, access modifier, variable type.
+     */
+    public class Variable : GLib.Object {
+        /** Variable name. */
         private string _name;
         public string name {
             get {
                 return _name;
             }
         }
-        /** Method implementation. */
-        private List<string> _implementation;
-        public List<string> implementation {
+        /** Variable type. */
+        private string _dataType;
+        public string dataType {
             get {
-                return _implementation;
+                return _dataType;
             }
         }
 
         /** Constructor */
-        public Method (string name, List<string> implementation) {
+        public Variable (string name, string dataType) {
             this._name = name;
-            this._implementation = implementation.copy_deep (strdup);
+            this._dataType = dataType;
         }
 
         /**
-         * Deep copy method for Method class.
+         * Deep copy method for Variable class.
          * This method is used for delegate method in copy_deep().
          * @param src copy target
-         * @result copied Method class
+         * @result copied Variable class
          */
-        public static Method copyMethod (Method src) {
+        public static Variable copyVariable (Variable src) {
             if (Objects.isNull (src)) {
-                return new Method ("", new List<string>());
+                return new Variable ("", "");
             }
-            return new Method (src.name, src.implementation.copy_deep (strdup));
+            return new Variable (src.name, src.dataType);
         }
     }
 }

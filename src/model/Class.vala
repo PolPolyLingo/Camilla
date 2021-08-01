@@ -15,20 +15,44 @@
  */
 
 using Gee;
+using Camilla.Core;
 
 namespace Camilla.Model {
-    /**
-     * Class is Model class for class definition.
-     */
+    /** Class is Model class for class definition. */
     public class Class : GLib.Object {
         /** Source code file path that this class was implemented.*/
-        private string filePath = null;
+        private string _filePath;
+        public string filePath {
+            get {
+                return _filePath;
+            }
+        }
         /** Method Map: key=method name, value=method(has name and implementation) */
-        HashMap<string, Method> methodMap;
+        private HashMap<string, Method> _methodMap;
+        public HashMap<string, Method> methodMap {
+            get {
+                return _methodMap;
+            }
+        }
 
-        public Class (string filePath) {
-            this.filePath = filePath;
-            this.methodMap = new HashMap<string, Method>();
+        /** Constructor */
+        public Class (string filePath, HashMap<string, Method> methodMap) {
+            this._filePath = filePath;
+            this._methodMap = methodMap;
+        }
+
+        /**
+         * Deep copy method for Variable class.
+         * This method is used for delegate method in copy_deep().
+         * @param src copy target
+         * @result copied Variable class
+         */
+        public static Class copyClass (Class src) {
+            if (Objects.isNull (src)) {
+                var map = new HashMap<string, Method>();
+                return new Class ("", map);
+            }
+            return new Class (src.filePath, src.methodMap);
         }
     }
 }

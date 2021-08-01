@@ -14,53 +14,43 @@
  * limitations under the License.
  */
 namespace Camilla.Model {
-    /**
-     * LineOfCode is class that holds information about the number of lines of source code.
-     */
+    /** LineOfCode is class that holds information about the number of lines of source code. */
     public class LineOfCode : GLib.Object {
         /** Source code file path.*/
-        private string filePath = null;
+        private string _filePath;
+        public string filePath {
+            get {
+                return _filePath;
+            }
+        }
         /** number of blank line */
-        uint blank = 0;
+        private uint _blank;
+        public uint blank {
+            get {
+                return _blank;
+            }
+        }
         /** number of comment line */
-        uint comment = 0;
+        private uint _comment;
+        public uint comment {
+            get {
+                return _comment;
+            }
+        }
         /** number of code line */
-        uint code = 0;
+        private uint _code;
+        public uint code {
+            get {
+                return _code;
+            }
+        }
 
         /** Constructor */
         public LineOfCode (string filePath, uint blank, uint comment, uint code) {
-            this.filePath = filePath;
-            this.blank = blank;
-            this.comment = comment;
-            this.code = code;
-        }
-
-        /**
-         * Returns  Source code file path .
-         */
-        public string getFilePath () {
-            return filePath;
-        }
-
-        /**
-         * Returns number of blank line.
-         */
-        public uint getBlank () {
-            return blank;
-        }
-
-        /**
-         * Returns number of comment line.
-         */
-        public uint getComment () {
-            return comment;
-        }
-
-        /**
-         * Returns number of code line.
-         */
-        public uint getCode () {
-            return code;
+            this._filePath = filePath;
+            this._blank = blank;
+            this._comment = comment;
+            this._code = code;
         }
     }
 }
