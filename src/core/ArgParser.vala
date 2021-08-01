@@ -111,8 +111,8 @@ namespace Camilla.Core {
          * Copy commandline arguments without application name and options.
          * @return commandline arguments without application name and options.
          */
-        public List<weak string> copyArgWithoutCmdNameAndOptions () {
-            return argListWithoutOptions.copy ();
+        public List<string> copyArgWithoutCmdNameAndOptions () {
+            return argListWithoutOptions.copy_deep (strdup);
         }
 
         /**

@@ -24,7 +24,7 @@ namespace Camilla.Core {
             List<string> fileList = new List<string>();
             if (Objects.isNull (path)) {
                 GLib.stdout.printf ("Target path is null.\n");
-                return fileList;
+                return fileList.copy_deep (GLib.strdup);
             }
 
             try {
@@ -46,10 +46,9 @@ namespace Camilla.Core {
                 }
             } catch (GLib.FileError e) {
                 GLib.critical ("Cannot open directory %s\n", path);
-                return fileList;
+                return fileList.copy_deep (GLib.strdup);
             }
-
-            return fileList;
+            return fileList.copy_deep (GLib.strdup);
         }
 
         /**
@@ -215,12 +214,12 @@ namespace Camilla.Core {
             GLib.List<string> lineList = new GLib.List<string>();
 
             if (String.isNullOrEmpty (path)) {
-                return lineList;
+                return lineList.copy_deep (GLib.strdup);
             }
 
             var file = GLib.File.new_for_path (path);
             if (!file.query_exists ()) {
-                return lineList;
+                return lineList.copy_deep (GLib.strdup);
             }
 
             try {
@@ -234,7 +233,7 @@ namespace Camilla.Core {
             } catch (Error e) {
                 error ("%s", e.message);
             }
-            return lineList;
+            return lineList.copy_deep (GLib.strdup);
         }
     }
 }

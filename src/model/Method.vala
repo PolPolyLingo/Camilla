@@ -14,27 +14,30 @@
  * limitations under the License.
  */
 namespace Camilla.Model {
-    public class Function : GLib.Object {
-        /** Function name.*/
+    /**
+     * Class is Model class for method definition.
+     */
+    public class Method : GLib.Object {
+        /** Method name.*/
         private string name;
-        /** Function implementation. */
+        /** Method implementation. */
         private string implementation = null;
 
         /** Constructor */
-        public Function (string name, string implementation) {
+        public Method (string name, string implementation) {
             this.name = name;
             this.implementation = implementation;
         }
 
         /**
-         * Returns function name.
+         * Returns method name.
          */
         public string getName () {
             return name;
         }
 
         /**
-         * Returns function implementation.
+         * Returns method implementation.
          */
         public string getImplementation () {
             return implementation;

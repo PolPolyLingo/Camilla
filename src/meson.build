@@ -7,7 +7,7 @@ app_files = [
           'parser/DeleteComment.vala',
           'parser/CountLineOfCode.vala',
           'model/Class.vala',
-          'model/Function.vala',
+          'model/Method.vala',
           'model/SourceCode.vala',
           'model/LineOfCode.vala',
           'Application.vala',

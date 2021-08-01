@@ -15,6 +15,10 @@
  */
 
 namespace Camilla.Model {
+    /**
+     * SourceCode is Model class for source code without comment.
+     *
+     */
     public class SourceCode : GLib.Object {
         /** Source code file path */
         private string filePath = null;

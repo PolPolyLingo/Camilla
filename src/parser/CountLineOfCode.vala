@@ -17,14 +17,71 @@ using Camilla.Core;
 using Camilla.Model;
 
 namespace Camilla.Parser {
+    /**
+     * CountLineOfCode is class that count line of code (only for vala).
+     * This class external specification is similar to the cloc command.
+     * However, implementation is different. I have never seen the source code of the cloc command.
+     */
     public class CountLineOfCode : GLib.Object {
+        /**
+         * Similar to the cloc command, it counts the number of lines in the source code
+         * and displays the result. However, this method only measures the number of lines
+         * in the vala source code.
+         * @param list List with elements of vala file only.
+         * @result true: If the number of lines is measured successfully,
+         *         false: list is empty or null.
+         */
+        public void cloc (List<string> list) {
+            if (list.length () == 0) {
+                return;
+            }
+            List<LineOfCode> locList = new List<LineOfCode> ();
+            foreach (string file in list) {
+                locList.append (count (file));
+            }
+            showClocResult (locList);
+        }
+
+        /**
+         * Returns the total value of each blank line, code line, and comment line.
+         * @locList　A list of LineOfCode classes that set the number of comment lines,
+         *           the number of blank lines, and the number of code lines.
+         * @return LineOfCode that already setted total value of each blank line, code line, and comment line.
+         */
+        private LineOfCode calcSumLineOfCode (List<LineOfCode> locList) {
+            uint blankCnt = 0;
+            uint commentCnt = 0;
+            uint codeCnt = 0;
+
+            foreach (var loc in locList) {
+                blankCnt += loc.getBlank ();
+                commentCnt += loc.getComment ();
+                codeCnt += loc.getCode ();
+            }
+            return new LineOfCode ("Sum", blankCnt, commentCnt, codeCnt);
+        }
+
+        private void showClocResult (List<LineOfCode> locList) {
+            var sum = calcSumLineOfCode (locList);
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+            stdout.printf ("File                                        blank        comment           code\n");
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+            foreach (var loc in locList) {
+                stdout.printf ("%-44s%5u        %7u         %6u\n",
+                               loc.getFilePath (), loc.getBlank (), loc.getComment (), loc.getCode ());
+            }
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+            stdout.printf ("%-44s%5u        %7u         %6u\n",
+                           sum.getFilePath (), sum.getBlank (), sum.getComment (), sum.getCode ());
+            stdout.printf ("-------------------------------------------------------------------------------\n");
+        }
 
         /**
          * Returns the number of comment lines, blank lines, and code lines in the source code.
          * @filePath file path to be checked.
          * @return Result that count Line Of Code.
          */
-        public static LineOfCode count (string filePath) {
+        private LineOfCode count (string filePath) {
             if (Objects.isNull (filePath)) {
                 return new LineOfCode ("(null)", 0, 0, 0);
             }
@@ -41,7 +98,7 @@ namespace Camilla.Parser {
          * Return code string of list without comment.
          * @param filePath file path to be checked.
          */
-        private static List<string> getCodeWithoutComment (string filePath) {
+        private List<string> getCodeWithoutComment (string filePath) {
             DeleteComment dc = new DeleteComment ();
             if (!dc.deleteComment (filePath)) {
                 return new List<string>();
@@ -55,7 +112,7 @@ namespace Camilla.Parser {
          * @param codeWithoutComment source code string without comment
          * @return number of blank line
          */
-        private static uint countBlankLine (List<string> codeWithoutComment) {
+        private uint countBlankLine (List<string> codeWithoutComment) {
             uint count = 0;
             bool notBlank = false;
 

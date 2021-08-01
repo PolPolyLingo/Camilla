@@ -76,7 +76,6 @@ namespace Camilla.Core {
                     }
                 }
             }
-
             return lineList;
         }
     }

@@ -17,15 +17,18 @@
 using Gee;
 
 namespace Camilla.Model {
+    /**
+     * Class is Model class for class definition.
+     */
     public class Class : GLib.Object {
         /** Source code file path that this class was implemented.*/
         private string filePath = null;
-        /** Function Map: key=function name, value=Function(has name and implementation) */
-        HashMap<string, Function> FunctionMap;
+        /** Method Map: key=method name, value=method(has name and implementation) */
+        HashMap<string, Method> methodMap;
 
         public Class (string filePath) {
             this.filePath = filePath;
-            this.FunctionMap = new HashMap<string, Function>();
+            this.methodMap = new HashMap<string, Method>();
         }
     }
 }

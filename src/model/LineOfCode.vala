@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 namespace Camilla.Model {
+    /**
+     * LineOfCode is class that holds information about the number of lines of source code.
+     */
     public class LineOfCode : GLib.Object {
         /** Source code file path.*/
         private string filePath = null;
