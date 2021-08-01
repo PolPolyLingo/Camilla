@@ -1,0 +1,18 @@
+@startuml model.png
+title model classes relation.
+
+!include ../../etc/plantuml_config.pu
+
+Namespace "1" *--right-- "0..*" Class
+Namespace "1" *--left-- "0..*" Struct
+Struct "1" *--- "1" AccessModifier
+Struct "1" *-- "0..*" Variable
+Class "1" *-- "0..*" Variable
+Class "1" *-- "1" AccessModifier
+Class "1" *-- "0..*" Method
+Method "1" *-- "0..*" Variable
+Method "1" *-- "1" DataType
+Variable "1" *--right-- "1" DataType
+Variable "1" *--- "1" AccessModifier
+
+@enduml
