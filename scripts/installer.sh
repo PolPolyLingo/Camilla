@@ -1,9 +1,12 @@
 #!/bin/bash -eu
 # [Description]
-#  This shell script is the installer for man-pages.
+#  This shell script install man-pages, LICENSE, NOTICE.
 ROOT_DIR=$(git rev-parse --show-toplevel)
 MAN_DIR="${ROOT_DIR}/man"
 MAN_PAGES_LANG="ja en"
+DOC_INSTALL_DIR="/usr/share/doc/camilla"
+LICENSE="${ROOT_DIR}/LICENSE"
+NOTICE="${ROOT_DIR}/NOTICE"
 
 function errMsg() {
     local message="$1"
@@ -38,5 +41,12 @@ function installManPages() {
     done
 }
 
+function installLicense() {
+    echo "Install LICENSE and NOTICE at ${DOC_INSTALL_DIR}"
+    install -m 0644 -D ${LICENSE} ${DOC_INSTALL_DIR}
+    install -m 0644 -D ${NOTICE} ${DOC_INSTALL_DIR}
+}   
+
 isRoot
 installManPages
+installLicense

@@ -14,4 +14,4 @@ do
     pandoc $i -s -t man > $dir/$base.1
     echo "Gzip man-page: $dir/${base}.1.gz"
     gzip -f $dir/$base.1
-doneva
+done

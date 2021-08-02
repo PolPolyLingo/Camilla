@@ -1,0 +1,127 @@
+/*
+ * Log4ValaTest.Logger
+ *
+ * The Log4Vala Project
+ *
+ * Copyright 2013-2016 Sensical, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+public class Log4ValaTest.Logger : AbstractTestCase {
+    public Logger () {
+        base ("Logger");
+        add_test ("get_logger.instance", get_logger_instance);
+        add_test ("get_logger.for_object_instance", get_logger_for_object_instance);
+        add_test ("get_logger.for_object_instance.without_translation", get_logger_for_object_instance_without_translation);
+        add_test ("get_logger.same.instance", get_logger_same_instance);
+        add_test ("log", do_log);
+        add_test ("log_format", do_log_format);
+        add_test ("legacy_log_format", do_legacy_log_format);
+    }
+
+    public void get_logger_instance () {
+        var logger = Log4Vala.Logger.get_logger ("test.project");
+        assert (logger != null);
+        assert (logger.name == "test.project");
+        assert (logger.log_level == Log4Vala.Level.TRACE);
+        logger.log_level = Log4Vala.Level.INFO;
+    }
+
+    public void get_logger_same_instance () {
+        var logger = Log4Vala.Logger.get_logger ("the.same");
+        var logger_two = Log4Vala.Logger.get_logger ("the.same");
+        assert (logger != null);
+        assert (logger_two != null);
+        assert (logger == logger_two);
+    }
+
+    public void get_logger_for_object_instance () {
+        var logger = Log4Vala.Logger.get_logger_for_object (new TestAppender ());
+        assert (logger != null);
+        assert (logger.name == "Test.Appender");
+
+        logger = Log4Vala.Logger.get_logger_for_object (this);
+        assert (logger != null);
+        assert (logger.name == "Log4.Vala.Test.Logger");
+    }
+
+    public void get_logger_for_object_instance_without_translation () {
+        Log4Vala.Config.get_config ().translate_type_name = false;
+        var logger = Log4Vala.Logger.get_logger_for_object (new TestAppender ());
+        assert (logger != null);
+        assert (logger.name == "TestAppender");
+
+        logger = Log4Vala.Logger.get_logger_for_object (this);
+        assert (logger != null);
+        assert (logger.name == "Log4ValaTestLogger");
+        Log4Vala.Config.get_config ().translate_type_name = true;
+    }
+
+    public void do_log () {
+        var appender = new TestAppender ();
+        Log4Vala.Config.get_config ().appenders.insert ("test.appender", appender);
+        Log4Vala.Config.get_config ().loggers.insert ("test.class", new Log4Vala.LoggerConfig ({ "test.appender" }, Log4Vala.Level.WARN));
+        var logger = Log4Vala.Logger.get_logger ("test.class");
+        logger.trace ("trace");
+        assert (appender.last_entry == null);
+        logger.debug ("debug");
+        assert (appender.last_entry == null);
+        logger.info ("info");
+        assert (appender.last_entry == null);
+        logger.warn ("warn");
+        assert ("WARN" in appender.last_entry);
+        assert ("warn" in appender.last_entry);
+        logger.error ("error");
+        assert ("ERROR" in appender.last_entry);
+        assert ("error" in appender.last_entry);
+        logger.fatal ("fatal");
+        assert ("FATAL" in appender.last_entry);
+        assert ("fatal" in appender.last_entry);
+    }
+
+    public void do_log_format () {
+        var appender = new TestAppender ();
+        Log4Vala.Config.get_config ().appenders.insert ("test.appender", appender);
+        Log4Vala.Config.get_config ().loggers.insert ("test.class", new Log4Vala.LoggerConfig ({ "test.appender" }, Log4Vala.Level.WARN));
+        var logger = Log4Vala.Logger.get_logger ("test.class");
+        logger.errorf ("error %d is %s", 51, "great");
+        assert ("ERROR" in appender.last_entry);
+        assert ("error 51 is great" in appender.last_entry);
+        logger.warnf ("warn %d is not %s", 22, "great");
+        assert ("WARN" in appender.last_entry);
+        assert ("warn 22 is not great" in appender.last_entry);
+    }
+
+    public void do_legacy_log_format () {
+        var appender = new TestAppender ();
+        Log4Vala.Config.get_config ().appenders.insert ("test.appender", appender);
+        Log4Vala.Config.get_config ().loggers.insert ("test.class", new Log4Vala.LoggerConfig ({ "test.appender" }, Log4Vala.Level.WARN));
+        var logger = Log4Vala.Logger.get_logger ("test.class");
+        logger.error_format ("error %d is %s", 51, "great");
+        assert ("ERROR" in appender.last_entry);
+        assert ("error 51 is great" in appender.last_entry);
+        logger.warn_format ("warn %d is not %s", 22, "great");
+        assert ("WARN" in appender.last_entry);
+        assert ("warn 22 is not great" in appender.last_entry);
+    }
+}
+
+public class TestAppender : Object, Log4Vala.Appender.IAppender {
+    public string name { get; set; default = "TestAppender"; }
+    public Log4Vala.Layout.ILayout ? layout { get; set; default = new Log4Vala.Layout.SimpleLayout (); }
+    public string last_entry { get; set; }
+
+    public void append (Log4Vala.LogEvent event) {
+        last_entry = name + " | " + this.layout.format (event);
+    }
+}

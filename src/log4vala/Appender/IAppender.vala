@@ -1,11 +1,15 @@
 /*
- * Copyright 2021 Naohiro CHIKAMATSU
+ * IAppender.vala
+ *
+ * The Log4Vala Project
+ *
+ * Copyright 2013-2016 Sensical, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,14 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using Log4Vala;
 
-namespace Camilla {
-    public class Application : GLib.Application  {
-        public static int main (string[] args) {
-            Camilla camilla = new Camilla ();
-            Log4Vala.init ();
-            return camilla.run (args);
-        }
-    }
+using Log4Vala.Layout;
+namespace Log4Vala.Appender {
+	public interface IAppender : Object {
+		public abstract string name { get; set; }
+		public abstract ILayout? layout { get; set; }
+		public abstract void append( LogEvent event );
+	}
 }

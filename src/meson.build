@@ -20,14 +20,25 @@ app_files = [
           ),
 ]
 
-dependencies = [
-    dependency('glib-2.0', version: '>=2.62'),
-    dependency('gobject-2.0'),
-    dependency('gio-2.0'),
-    dependency('gee-0.8'),
-    #meson.get_compiler('vala').find_library('linux'),
-    meson.get_compiler('vala').find_library('posix'),
-]
+# fork log4vala from https://github.com/nmelnick/Log4Vala
+log4vala_sources = files([
+	'log4vala/Config.vala',
+	'log4vala/Core.vala',
+	'log4vala/Level.vala',
+	'log4vala/LogEvent.vala',
+	'log4vala/Logger.vala',
+	'log4vala/LoggerCompat.vala',
+	'log4vala/LoggerConfig.vala',
+	'log4vala/Appender/IAppender.vala',
+	'log4vala/Appender/FileAppender.vala',
+	'log4vala/Appender/ScreenAppender.vala',
+	'log4vala/Appender/SocketAppender.vala',
+	'log4vala/Layout/ILayout.vala',
+	'log4vala/Layout/DescriptiveLayout.vala',
+	'log4vala/Layout/PatternLayout.vala',
+	'log4vala/Layout/SimpleLayout.vala'
+])
+app_files += log4vala_sources
 
 camilla_deps = [
     libvala_dep,

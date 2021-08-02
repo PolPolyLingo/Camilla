@@ -16,6 +16,7 @@
 using Camilla.Core;
 using Camilla.Model;
 using Camilla.Parser;
+using Log4Vala;
 
 namespace Camilla {
     public class Camilla : GLib.Object {
@@ -23,6 +24,8 @@ namespace Camilla {
         private ArgParser argParser;
         /** File list to be checked.  */
         private List<string> targetFileList;
+        /** logger  */
+        private Log4Vala.Logger logger;
 
         /**
          * Application exit status.
@@ -42,7 +45,7 @@ namespace Camilla {
                               author ("Naohiro CHIKAMATSU <n.chika156@gmail.com>").
                               contact ("https://github.com/nao1215/Camilla").
                               build ();
-            // targetFileList = new List<string>();
+            logger = Log4Vala.Logger.get_logger ("Camilla.class");
         }
 
         /**
@@ -50,6 +53,7 @@ namespace Camilla {
          * @param commandline arguments.
          */
         public int run (string[] args) {
+            logger.info ("Start");
             if (!initialize (args)) {
                 return EXIT_STATUS.FAILURE;
             }
