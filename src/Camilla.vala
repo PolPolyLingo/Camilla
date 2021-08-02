@@ -68,16 +68,15 @@ namespace Camilla {
                 return;
             }
 
-            DeleteComment dc = new DeleteComment ();
-
             foreach (string file in targetFileList) {
+                DeleteComment dc = new DeleteComment ();
                 if (!dc.deleteComment (file)) {
                     stdout.printf ("Can't parse %s.", file);
                     continue;
                 }
-                stdout.printf ("%s:Not implementation.\n", file);
                 SourceCode sc = new SourceCode (file, dc.getCodeWithoutComment ());
-                Namespace namespace = SourceCodeParser.parse (sc);
+                SourceCodeParser scp = new SourceCodeParser ();
+                Namespace namespace = scp.parse (sc);
             }
         }
 

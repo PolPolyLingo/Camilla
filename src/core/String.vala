@@ -76,7 +76,43 @@ namespace Camilla.Core {
                     }
                 }
             }
+            /* If there is no line feed code at the end of the string */
+            if (line.length != 0) {
+                lineList.append (line);
+            }
             return lineList.copy_deep (strdup);
+        }
+
+        /**
+         * Concatenates string list and returns a single string.
+         * @param strList String list to be concatenated.
+         * @result string that concatenates a string list
+         */
+        public static string toString (List<string> strList) {
+            string result = "";
+            /*
+               if (Objects.isNull (strList)) {
+                return "";
+               }
+             */
+            foreach (weak string str in strList) {
+                result += str;
+            }
+            return result.dup ();
+        }
+
+        /**
+         * Remove whitespace and tabs at the beginning and end of the string.
+         * @param str string to be trimmed
+         * @return string after trimming
+         */
+        public static string trim (string str) {
+            if (Objects.isNull (str)) {
+                return "";
+            }
+            var tmp = str.dup ();
+            tmp = tmp.replace (" ", "");
+            return tmp.replace ("\t", "").dup ();
         }
     }
 }

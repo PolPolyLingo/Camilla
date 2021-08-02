@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using Camilla.Core;
-
 namespace Camilla.Parser {
     /**
      * DeleteComment is class that delete comment from vala source code.
@@ -36,7 +34,9 @@ namespace Camilla.Parser {
         private unichar prevprevChar = '\0';
         /** source code parse status */
         private STATE state = STATE.CODE;
-        /** Constant definition for avoiding unnatural formats */
+        /** Constant definition for single quote. */
+        private const unichar SINGLE_QUOTE = '\'';
+        /** Constant definition for double quote. */
         private const unichar DOUBLE_QUOTE = '"';
 
         /** Parsing code state */
@@ -119,10 +119,20 @@ namespace Camilla.Parser {
                 if (prevprevChar != '\\' && prevChar == '*' && nowChar == '/') {
                     state = STATE.CODE;
 
+                    /*
+                     * Change whether to delete line feed depending on "if the line has only comments" or
+                     * "if the comment is written next to the code".
+                     * In the former case, the string from the position where the last line feed appears to
+                     * the end is deleted.
+                     */
                     int offset = codeWithoutComment.last_index_of_char ('\n');
                     if (offset >= 0) {
-                        codeWithoutComment = codeWithoutComment.substring (0, offset);
+                        var tmp = codeWithoutComment.substring (offset + 1, codeWithoutComment.length - offset - 1);
+                        if (String.trim (tmp).length == 0) {
+                            codeWithoutComment = codeWithoutComment.substring (0, offset);
+                        }
                     }
+
                     resetPreAndPrePreChar ();
                 } else if (nowChar == '\n') {
                     resetPreAndPrePreChar ();
@@ -201,7 +211,7 @@ namespace Camilla.Parser {
          * @result true: can parse next character, false: can not parse next character.
          */
         private void transitionStartStringLiteralIfNeeded () {
-            if (nowChar == DOUBLE_QUOTE) {
+            if (state == STATE.CODE && prevChar != SINGLE_QUOTE && nowChar == DOUBLE_QUOTE) {
                 state = STATE.STRING_LITERAL;
             }
         }
@@ -232,7 +242,6 @@ namespace Camilla.Parser {
         /**
          * Return source code without comment.
          * @return List<string> that source code without comment or null.
-         *
          */
         public List<string> getCodeWithoutComment () {
             return result ? String.toLines (codeWithoutComment) : null;
