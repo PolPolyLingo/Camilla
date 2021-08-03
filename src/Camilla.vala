@@ -42,7 +42,7 @@ namespace Camilla {
             this.argParser = new ArgParser.Builder ().
                               applicationName ("camilla").
                               applicationArgument ("FILE_NAME or DIRECTORY_NAME or NOTHING").
-                              description ("camilla is static analysis tool for vala language.").
+                              description (N_ ("camilla is static analysis tool for vala language.")).
                               version ("0.1.0").
                               author ("Naohiro CHIKAMATSU <n.chika156@gmail.com>").
                               contact ("https://github.com/nao1215/Camilla").
@@ -115,9 +115,9 @@ namespace Camilla {
          * Set application options.
          */
         private void setOptions () {
-            argParser.addOption ("c", "count", "Count line of codes.");
-            argParser.addOption ("h", "help", "Show usage.");
-            argParser.addOption ("v", "version", "Show dscc command version.");
+            argParser.addOption ("c", "count", N_ ("Count line of codes."));
+            argParser.addOption ("h", "help", N_ ("Show help message."));
+            argParser.addOption ("v", "version", N_ ("Show camilla command version."));
         }
 
         /**

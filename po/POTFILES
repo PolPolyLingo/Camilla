@@ -1,0 +1,12 @@
+# [generate .pot file]
+# $ cd ${PROJECT_ROOT}
+# $ meson build
+# $ cd build
+# $ meson compile camilla-pot
+#
+# [generate .po file]
+# $ meson compile camilla-update-po
+#
+# [generate .mo file]
+# $ meson compile camilla-update-gmo
+src/Camilla.vala

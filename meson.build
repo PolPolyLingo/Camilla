@@ -9,6 +9,7 @@ add_project_arguments([
         '-Wno-discarded-qualifiers',
         '-Wno-incompatible-pointer-types',
         '-Wno-unused',
+        '-DGETTEXT_PACKAGE="intltest"',
         ],
         language: 'c',
 )
@@ -20,6 +21,7 @@ libvala_version = run_command(valac.cmd_array()[0], '--api-version').stdout().st
 posix_dep = valac.find_library('posix')
 libvala_required_version = '>= 0.40.4'
 libvala_dep = dependency('libvala-@0@'.format(libvala_version), version: libvala_required_version)
+i18n = import('i18n')
 
 dependencies = [
     dependency('glib-2.0', version: '>=2.62'),
@@ -31,9 +33,10 @@ dependencies = [
     meson.get_compiler('vala').find_library('posix'),
 ]
 
-# Build and Test target directory
+# Build / Test / Translate target directory
 subdir('src')
 subdir('test')
+subdir('po')
 
 # Manpages build & install setting
 build_man_pages= find_program('scripts/mkman.sh')
