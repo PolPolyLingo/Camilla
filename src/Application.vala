@@ -20,6 +20,14 @@ using Log4Vala;
 namespace Camilla {
     public class Application : GLib.Application  {
         public static int main (string[] args) {
+            /* Initiliaze gettext support */
+            Intl.setlocale (LocaleCategory.ALL, "");
+            Intl.bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+            Intl.bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+            Intl.textdomain (GETTEXT_PACKAGE);
+            Environment.set_application_name (Configs.APPLICATION_NAME);
+            Environment.set_prgname (Configs.APPLICATION_NAME);
+
             Camilla camilla = new Camilla ();
             Log4Vala.init (Configs.logConfFilePath ());
             return camilla.run (args);

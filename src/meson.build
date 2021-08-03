@@ -41,8 +41,19 @@ log4vala_sources = files([
 	'log4vala/Layout/PatternLayout.vala',
 	'log4vala/Layout/SimpleLayout.vala'
 ])
+
+config_data = configuration_data()
+config_data.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
+config_data.set_quoted('GETTEXT_PACKAGE', meson.project_name())
+locale_file = configure_file(
+    input: 'Locale.vala.in',
+    output: '@BASENAME@',
+    configuration: config_data
+)
+
 app_files += camilla_sources
 app_files += log4vala_sources
+app_files += locale_file
 
 camilla_deps = [
     libvala_dep,

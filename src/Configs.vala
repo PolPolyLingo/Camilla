@@ -23,6 +23,7 @@ namespace Camilla {
      * Named Config "s" to avoid having the same name as Log4vala's Config class.
      */
     public class Configs : GLib.Object {
+        public const string APPLICATION_NAME = "camilla";
         /** Default settings for logs */
         const string DEFAULT_LOG_CONF_PATH = "/usr/share/camilla/camilla-log4vala.conf";
         /**This path that used by developers in environments where Camilla is not yet installed. */
