@@ -94,10 +94,6 @@ namespace Camilla {
         private bool initialize (string[] args) {
             setOptions ();
             argParser.parse (args);
-            if (!decideTargetFileList () || targetFileList.length () == 0) {
-                argParser.usage ();
-                return false;
-            }
 
             if (argParser.hasOption ("v")) {
                 argParser.showVersion ();
@@ -105,6 +101,11 @@ namespace Camilla {
             }
 
             if (argParser.hasOption ("h")) {
+                argParser.usage ();
+                return false;
+            }
+
+            if (!decideTargetFileList () || targetFileList.length () == 0) {
                 argParser.usage ();
                 return false;
             }
