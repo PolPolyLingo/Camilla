@@ -29,7 +29,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build and install
         run: |
-          ./script/setupDevelopmentEnvForUbuntu.sh
+          ./scripts/setupDevelopmentEnvForUbuntu.sh
           meson build
           ninja -C build
           sudo ninja -C build install
