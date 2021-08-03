@@ -1,5 +1,6 @@
 # Camilla (**In development.**)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/nao1215/Camilla/build)
+[![build](https://github.com/nao1215/serial/actions/workflows/build.yml/badge.svg)](https://github.com/nao1215/serial/actions/workflows/build.yml)
+[![test](https://github.com/nao1215/serial/actions/workflows/test.yml/badge.svg)](https://github.com/nao1215/serial/actions/workflows/test.yml)
 ![GitHub](https://img.shields.io/github/license/nao1215/Camilla)
 ![GitHub last commit](https://img.shields.io/github/last-commit/nao1215/Camilla)
 ![GitHub issues](https://img.shields.io/github/issues/nao1215/Camilla)  
