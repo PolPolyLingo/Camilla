@@ -30,9 +30,8 @@ jobs:
       - name: Build and install
         run: |
           ./scripts/setupDevelopmentEnvForUbuntu.sh
-          ls /usr/lib/x86_64-linux-gnu/libvala-0.48.so
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/ 
-          meson build LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/ 
+          meson build
           ninja -C build
           sudo ninja -C build install
         
