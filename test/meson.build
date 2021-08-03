@@ -12,6 +12,7 @@ test_sources = files([
 	'log4vala/Layout.SimpleLayout.test.vala',
 ])
 test_sources += log4vala_sources
+test_sources += camilla_sources
 
 test_deps = dependencies
 

@@ -34,7 +34,7 @@ namespace Camilla.Parser {
             HashMap<string, string> namespaceMap = ne.parse (String.toString (sc.code));
 
             foreach (string key in namespaceMap.keys) {
-                var code = namespaceMap.get (key);
+                // var code = namespaceMap.get (key);
                 stdout.printf ("[file]=%s, [namespace]=%s\n", sc.filePath, key);
             }
             return new Namespace (new GLib.List<Class>(), new GLib.List<Struct>());

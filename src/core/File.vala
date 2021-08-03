@@ -167,6 +167,42 @@ namespace Camilla.Core {
         }
 
         /**
+         * Extract the dirname from the file path.
+         * @param path file path to be checked.
+         * @return string of dirname. If path is null or not file path, return "";
+         */
+        public static string dirname (string path) {
+            if (String.isNullOrEmpty (path)) {
+                return "";
+            }
+            return Path.get_dirname (path);
+        }
+
+        /**
+         * Create a directory including the parent directory.
+         * @param path directory path to be created.
+         * @return true: directory is created successfully.
+         *         false: path is null, or directory creation fails, or
+         *                file to be created already exists.
+         */
+        public static bool mkdirs (string path) {
+            if (String.isNullOrEmpty (path)) {
+                return false;
+            }
+
+            if (isDir (path)) {
+                return false; /* already exists. */
+            }
+            try {
+                var file = GLib.File.new_for_path (path);
+                file.make_directory_with_parents ();
+            } catch (Error e) {
+                return false;
+            }
+            return true;
+        }
+
+        /**
          * Extract the base name (file name) without extension from the file path.
          * @param path file path to be checked.
          * @return string of basename. If path is null or not file path, return "";

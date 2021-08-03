@@ -1,4 +1,7 @@
-app_files = [
+# Files other than Application.vala are linked with the test binary.
+# Application.vala has main () and cannot be linked with a test binary that has main().
+app_files = files('Application.vala')
+camilla_sources = [
     files('core/ArgParser.vala',
           'core/File.vala',
           'core/Objects.vala',
@@ -15,7 +18,6 @@ app_files = [
           'parser/CountLineOfCode.vala',
           'parser/DeleteComment.vala',
           'parser/SourceCodeParser.vala',
-          'Application.vala',
           'Camilla.vala'
           ),
 ]
@@ -38,6 +40,7 @@ log4vala_sources = files([
 	'log4vala/Layout/PatternLayout.vala',
 	'log4vala/Layout/SimpleLayout.vala'
 ])
+app_files += camilla_sources
 app_files += log4vala_sources
 
 camilla_deps = [

@@ -37,4 +37,6 @@ The changelist from the original Log4Vala are shown below.
 - Log4Vala statically links with binaries instead of .so library format.
 - Changed the directory structure of the test code for Log4Vala.
 - Added license text to Log4Vala test code header.
+- refresh_filehandle()@src/log4vala/Appender/FileAppender.vala
+  Added process to create if the log file save directory does not exist.
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
