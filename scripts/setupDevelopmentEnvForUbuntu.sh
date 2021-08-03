@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PACKAGES="git valac meson ninja-build libglib2.0-dev build-essential gzip pandoc graphviz plantuml uncrustify"
+PACKAGES="git valac valac-bin libvala-0.48-dev libvalacodegen-0.48-0 valac-0.48-vapi \
+          meson ninja-build libglib2.0-dev build-essential gzip pandoc uncrustify"
 
 function isUbuntu() {
     cat /etc/os-release | grep "NAME=\"Ubuntu\""
