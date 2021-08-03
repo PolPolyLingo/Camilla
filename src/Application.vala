@@ -21,7 +21,7 @@ namespace Camilla {
     public class Application : GLib.Application  {
         public static int main (string[] args) {
             Camilla camilla = new Camilla ();
-            Log4Vala.init ("data/camilla-log4vala.conf");
+            Log4Vala.init (Configs.logConfFilePath ());
             return camilla.run (args);
         }
     }

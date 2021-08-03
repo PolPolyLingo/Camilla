@@ -18,7 +18,8 @@ camilla_sources = [
           'parser/CountLineOfCode.vala',
           'parser/DeleteComment.vala',
           'parser/SourceCodeParser.vala',
-          'Camilla.vala'
+          'Camilla.vala',
+          'Configs.vala'
           ),
 ]
 
