@@ -1,4 +1,8 @@
 # Camilla (**In development.**)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/nao1215/Camilla/build)
+![GitHub](https://img.shields.io/github/license/nao1215/Camilla)
+![GitHub last commit](https://img.shields.io/github/last-commit/nao1215/Camilla)
+![GitHub issues](https://img.shields.io/github/issues/nao1215/Camilla)  
 Camilla is a static analysis tool for the Vala language.  
 
 # Features to be provided
