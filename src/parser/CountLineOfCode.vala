@@ -65,17 +65,17 @@ namespace Camilla.Parser {
 
         private void showClocResult (List<LineOfCode> locList) {
             var sum = calcSumLineOfCode (locList);
-            stdout.printf ("-------------------------------------------------------------------------------\n");
-            stdout.printf ("File                                        blank        comment           code\n");
-            stdout.printf ("-------------------------------------------------------------------------------\n");
+            stdout.printf ("---------------------------------------------------------------------------------------\n");
+            stdout.printf ("File                                                blank        comment           code\n");
+            stdout.printf ("---------------------------------------------------------------------------------------\n");
             foreach (var loc in locList) {
-                stdout.printf ("%-44s%5u        %7u         %6u\n",
+                stdout.printf ("%-52s%5u        %7u         %6u\n",
                                loc.filePath, loc.blank, loc.comment, loc.code);
             }
-            stdout.printf ("-------------------------------------------------------------------------------\n");
-            stdout.printf ("%-44s%5u        %7u         %6u\n",
+            stdout.printf ("---------------------------------------------------------------------------------------\n");
+            stdout.printf ("%-52s%5u        %7u         %6u\n",
                            sum.filePath, sum.blank, sum.comment, sum.code);
-            stdout.printf ("-------------------------------------------------------------------------------\n");
+            stdout.printf ("---------------------------------------------------------------------------------------\n");
         }
 
         /**
