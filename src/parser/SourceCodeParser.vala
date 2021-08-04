@@ -25,6 +25,13 @@ namespace Camilla.Parser {
      * method definitions.
      */
     public class SourceCodeParser : GLib.Object {
+        /** logger  */
+        private Log4Vala.Logger logger;
+
+        public SourceCodeParser () {
+            logger = Log4Vala.Logger.get_logger ("SourceCodeParser.class");
+        }
+
         /**
          * After parsing the source code (one file) without comments,
          * the data of the namespace in the source code is returned.
@@ -33,11 +40,11 @@ namespace Camilla.Parser {
          */
         public Namespace parse (SourceCode sc) {
             NamespaceExtractor ne = new NamespaceExtractor ();
-            HashMap<string, string> namespaceMap = ne.parse (String.toString (sc.code));
+            HashMap<string, string> namespaceMap = ne.parse (sc);
 
             foreach (string key in namespaceMap.keys) {
                 // var code = namespaceMap.get (key);
-                stdout.printf ("[file]=%s, [namespace]=%s\n", sc.filePath, key);
+                logger.info ("[file]=" + sc.filePath + " [namespace]=" + key);
             }
             return new Namespace (new GLib.List<Class>(), new GLib.List<Struct>());
         }
@@ -50,10 +57,13 @@ namespace Camilla.Parser {
         private STATE state = NOT_FOUND_NAMESPACE;
         /** Curly braces to determine the start and end of a namespace */
         uint curlyBraces = 0;
+        /** logger  */
+        private Log4Vala.Logger logger;
 
         /** Constructor */
         public NamespaceExtractor () {
             namespaceMap = new HashMap<string, string> ();
+            logger = Log4Vala.Logger.get_logger ("NamespaceExtractor.class");
         }
 
         /** Parsing namespace state.*/
@@ -81,8 +91,8 @@ namespace Camilla.Parser {
          * }
          * ---------------
          */
-        public HashMap<string, string> parse (string sourceCode) {
-            string code = sourceCode.dup ();
+        public HashMap<string, string> parse (SourceCode sc) {
+            string code = String.toString (sc.code);
             string strInNamespace = "";
             string namespaceName = "";
             string nowStr = "";
@@ -106,8 +116,13 @@ namespace Camilla.Parser {
             }
 
             if (hasGlobalNamespace (strInNamespace)) {
-                stdout.printf ("curlyBraces=%zu\n", curlyBraces);
                 namespaceMap.set ("global", strInNamespace);
+            }
+
+            if (curlyBraces != 0) {
+                logger.warn ("The number of curly braces does not match. Number od curry brace="
+                             + curlyBraces.to_string ());
+                logger.warn ("File that may have failed to parse:" + sc.filePath);
             }
             return namespaceMap;
         }

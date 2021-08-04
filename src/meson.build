@@ -18,6 +18,7 @@ camilla_sources = [
           'parser/CountLineOfCode.vala',
           'parser/DeleteComment.vala',
           'parser/SourceCodeParser.vala',
+          'Banner.vala',
           'Camilla.vala',
           'Configs.vala'
           ),

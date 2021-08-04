@@ -11,11 +11,14 @@ camilla –  static analysis tool for vala language
 **camilla** [OPTIONS] DIRECTORY_PATH
 
 # DESCRIPTION
-**camilla** statically analyzes * .vala files under specified directory or under the current directory
+**camilla** statically analyzes * .vala files under specified directory or under the current directory.
 
 # OPTIONS
 **-c**, **--count**
 :   Counts the number of lines of Vala language source code (code lines, comment lines, blank lines).
+
+**-d**, **--debug**
+:   Show debug log at STDOUT.
 
 **-h**, **--help**
 :   Show help message.

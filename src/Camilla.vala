@@ -47,7 +47,6 @@ namespace Camilla {
                               author ("Naohiro CHIKAMATSU <n.chika156@gmail.com>").
                               contact ("https://github.com/nao1215/Camilla").
                               build ();
-            logger = Log4Vala.Logger.get_logger ("Camilla.class");
         }
 
         /**
@@ -55,12 +54,11 @@ namespace Camilla {
          * @param commandline arguments.
          */
         public int run (string[] args) {
-            logger.info ("Start");
             if (!initialize (args)) {
                 return EXIT_STATUS.FAILURE;
             }
+            logParseTargetFiles ();
             parse ();
-
             return EXIT_STATUS.SUCCESS;
         }
 
@@ -77,7 +75,7 @@ namespace Camilla {
             foreach (string file in targetFileList) {
                 DeleteComment dc = new DeleteComment ();
                 if (!dc.deleteComment (file)) {
-                    stdout.printf ("Can't parse %s.", file);
+                    stdout.printf ("Can 't parse %s.", file);
                     continue;
                 }
                 SourceCode sc = new SourceCode (file, dc.getCodeWithoutComment ());
@@ -94,6 +92,17 @@ namespace Camilla {
         private bool initialize (string[] args) {
             setOptions ();
             argParser.parse (args);
+
+            if (argParser.hasOption ("d")) {
+                debugPrintOn ();
+            }
+            /**
+             * If we don't get the logger at this timing that is the config
+             * setting is confirmed, the log level will not be set as expected.
+             */
+            logger = Log4Vala.Logger.get_logger ("Camilla.class");
+            logger.info (Banner.startMsg);
+            logger.info (argParser.parseResult ());
 
             if (argParser.hasOption ("v")) {
                 argParser.showVersion ();
@@ -117,6 +126,7 @@ namespace Camilla {
          */
         private void setOptions () {
             argParser.addOption ("c", "count", N_ ("Count line of codes."));
+            argParser.addOption ("d", "debug", N_ ("Show debug log at STDOUT."));
             argParser.addOption ("h", "help", N_ ("Show help message."));
             argParser.addOption ("v", "version", N_ ("Show camilla command version."));
         }
@@ -164,6 +174,34 @@ namespace Camilla {
                 }
             }
             return list.copy_deep (strdup);
+        }
+
+        /**
+         * Logs with a log level of INFO or higher are output to the user.
+         * Delete the default settings and overwrite the debug log settings.
+         * Therefore, the setting for writing to the log file and the
+         * log level are different from initial setteing.
+         * And then, show only messages. Not show log level or time information or other information.
+         */
+        private void debugPrintOn () {
+            var config = Log4Vala.Config.get_config ();
+            config.set_defaults ();
+
+            config.root_level = Level.INFO;
+            config.root_appender.layout = new Log4Vala.Layout.PatternLayout ();
+            var layout = (Log4Vala.Layout.PatternLayout)config.root_appender.layout;
+            layout.pattern = "%m"; /* Only show message. */
+        }
+
+        /**
+         * Log the file list to be parsed.
+         * Use this method after decideTargetFileList().
+         */
+        private void logParseTargetFiles () {
+            logger.info ("[Parse taget files]");
+            foreach (string element in targetFileList) {
+                logger.info (" " + element);
+            }
         }
     }
 }

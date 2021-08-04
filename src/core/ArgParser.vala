@@ -38,6 +38,8 @@ namespace Camilla.Core {
         private List<Option> optionList;
         /** Argument without Options (e.g. test in "$ command -h -d test") */
         private List<string> argListWithoutOptions;
+        /** Flag whether it has been parsed. */
+        private bool parsed = false;
 
         /**
          * Private constructor. Call from Builder class.
@@ -83,7 +85,8 @@ namespace Camilla.Core {
          * Show version of this appliction on STDOUT.
          */
         public void showVersion () {
-            stdout.printf ("%s version %s\n", appName, version);
+            stdout.printf ("[Application name & Version]\n");
+            stdout.printf (" %s version %s\n", appName, version);
         }
 
         /**
@@ -93,6 +96,7 @@ namespace Camilla.Core {
         public void parse (string[] args) {
             validOptionsIfNeeded (args);
             getArgListWithoutOptions (args);
+            parsed = true;
         }
 
         /**
@@ -115,6 +119,33 @@ namespace Camilla.Core {
          */
         public List<string> copyArgWithoutCmdNameAndOptions () {
             return argListWithoutOptions.copy_deep (strdup);
+        }
+
+        /**
+         *
+         *
+         *
+         */
+        public string parseResult () {
+            if (!parsed) {
+                return "No result: Before parsing".dup ();
+            }
+            string result = "[Options]\n";
+            foreach (var o in optionList) {
+
+                result += o.IsValid () ? " ON :" : " OFF:";
+                result += o.GetLongOption () + ":" + o.GetDescription () + "\n";
+            }
+
+            result += "[Arguments]\n";
+            if (argListWithoutOptions.length () == 0) {
+                result += " NO ARGUMENTS.";
+            } else {
+                foreach (var arg in argListWithoutOptions) {
+                    result += arg;
+                }
+            }
+            return result.dup ();
         }
 
         /**
