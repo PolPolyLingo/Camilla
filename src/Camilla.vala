@@ -26,6 +26,8 @@ namespace Camilla {
         private ArgParser argParser;
         /** File list to be checked.  */
         private List<string> targetFileList;
+        /** File list that failed to parse. */
+        private List<string> parseFailedFileList;
         /** logger  */
         private Log4Vala.Logger logger;
 
@@ -68,20 +70,21 @@ namespace Camilla {
         private void parse () {
             if (argParser.hasOption ("c")) {
                 CountLineOfCode cloc = new CountLineOfCode ();
-                cloc.cloc (targetFileList);
+                parseFailedFileList = cloc.cloc (targetFileList);
                 return;
             }
 
+            logger.debug ("Start parsing.");
             foreach (string file in targetFileList) {
                 DeleteComment dc = new DeleteComment ();
                 if (!dc.deleteComment (file)) {
-                    stdout.printf ("Can 't parse %s.", file);
                     continue;
                 }
                 SourceCode sc = new SourceCode (file, dc.getCodeWithoutComment ());
                 SourceCodeParser scp = new SourceCodeParser ();
                 Namespace namespace = scp.parse (sc);
             }
+            logParseFailedFiles ();
         }
 
         /**
@@ -201,6 +204,20 @@ namespace Camilla {
             logger.info ("[Parse taget files]");
             foreach (string element in targetFileList) {
                 logger.info (" " + element);
+            }
+        }
+
+        /**
+         * Log files that failed parse.
+         */
+        private void logParseFailedFiles () {
+            logger.info ("[Parse failed files]");
+            if (parseFailedFileList.length () == 0) {
+                logger.info (" Nothing.");
+                return;
+            }
+            foreach (var file in parseFailedFileList) {
+                logger.info (" " + file);
             }
         }
     }

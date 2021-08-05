@@ -40,6 +40,8 @@ namespace Camilla.Parser {
         private const unichar SINGLE_QUOTE = '\'';
         /** Constant definition for double quote. */
         private const unichar DOUBLE_QUOTE = '"';
+        /** logger  */
+        private Log4Vala.Logger logger;
 
         /** Parsing code state */
         enum STATE {
@@ -49,6 +51,11 @@ namespace Camilla.Parser {
             STRING_LITERAL /** String enclosed in double quotes */
         }
 
+        /** Constructor */
+        public DeleteComment () {
+            logger = Log4Vala.Logger.get_logger ("DeleteComment.class");
+        }
+
         /**
          * Delete comment from source code and save code without comment.
          * @param filePath file path to the code to delete the comment
@@ -56,7 +63,10 @@ namespace Camilla.Parser {
         public bool deleteComment (string filePath) {
             bool headerIsCStyleComment = false;
             this.filePath = filePath;
+            result = false;
+
             if (!Core.File.canRead (filePath)) {
+                logger.warn ("Because you do not have read permission, can't read " + filePath);
                 return result;
             }
 
@@ -108,7 +118,10 @@ namespace Camilla.Parser {
             if (headerIsCStyleComment) {
                 codeWithoutComment = codeWithoutComment.substring (1, codeWithoutComment.length - 1);
             }
+
             result = true;
+            logger.debug ("[" + filePath + "(Before: with comment)]\n" + fileToStr (filePath));
+            logger.debug ("[" + filePath + "(After: without comment)]\n" + codeWithoutComment);
             return result;
         }
 
@@ -246,6 +259,10 @@ namespace Camilla.Parser {
          * @return List<string> that source code without comment or null.
          */
         public List<string> getCodeWithoutComment () {
+            if (!result) {
+                logger.warn ("
+                Returns an invalid result before the comment is deleted or because the comment deletion has failed.");
+            }
             return result ? String.toLines (codeWithoutComment) : null;
         }
     }

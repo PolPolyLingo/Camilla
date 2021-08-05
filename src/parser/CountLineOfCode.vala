@@ -25,23 +25,35 @@ namespace Camilla.Parser {
      * However, implementation is different. I have never seen the source code of the cloc command.
      */
     public class CountLineOfCode : GLib.Object {
+        /** logger  */
+        private Log4Vala.Logger logger;
+        /** File list that failed to parse. */
+        private List<string> parseFailedFileList;
+
+        /** Constructor */
+        public CountLineOfCode () {
+            logger = Log4Vala.Logger.get_logger ("CountLineOfCode.class");
+            parseFailedFileList = new List<string> ();
+        }
+
         /**
          * Similar to the cloc command, it counts the number of lines in the source code
          * and displays the result. However, this method only measures the number of lines
          * in the vala source code.
          * @param list List with elements of vala file only.
-         * @result true: If the number of lines is measured successfully,
-         *         false: list is empty or null.
+         * @result String list containing filenames that failed to parse
          */
-        public void cloc (List<string> list) {
+        public List<string> cloc (List<string> list) {
             if (list.length () == 0) {
-                return;
+                logger.warn ("File list is empty. Unable to calculate the number of lines of code.");
+                return parseFailedFileList.copy_deep (strdup);
             }
             List<LineOfCode> locList = new List<LineOfCode> ();
             foreach (string file in list) {
                 locList.append (count (file));
             }
             showClocResult (locList);
+            return parseFailedFileList.copy_deep (strdup);
         }
 
         /**
@@ -85,7 +97,8 @@ namespace Camilla.Parser {
          */
         private LineOfCode count (string filePath) {
             if (Objects.isNull (filePath)) {
-                return new LineOfCode ("(null)", 0, 0, 0);
+                logger.warn ("The file path to be counted is null. The counting target file list is abnormal.");
+                return new LineOfCode ("!!! Parse error !!!", 0, 0, 0);
             }
 
             List<string> codeWithoutComment = getCodeWithoutComment (filePath);
@@ -103,6 +116,8 @@ namespace Camilla.Parser {
         private List<string> getCodeWithoutComment (string filePath) {
             DeleteComment dc = new DeleteComment ();
             if (!dc.deleteComment (filePath)) {
+                logger.warn ("Comment deletion failed.");
+                parseFailedFileList.append (filePath);
                 return new List<string>();
             }
             return dc.getCodeWithoutComment ();

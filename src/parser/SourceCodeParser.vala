@@ -28,6 +28,7 @@ namespace Camilla.Parser {
         /** logger  */
         private Log4Vala.Logger logger;
 
+        /** Constructor */
         public SourceCodeParser () {
             logger = Log4Vala.Logger.get_logger ("SourceCodeParser.class");
         }

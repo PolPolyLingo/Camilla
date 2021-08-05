@@ -8,31 +8,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: camilla\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-05 02:11+0900\n"
+"POT-Creation-Date: 2021-08-05 15:19+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Camilla.vala:45
+#: src/Camilla.vala:47
 msgid "camilla is static analysis tool for vala language."
 msgstr ""
 
-#: src/Camilla.vala:128
+#: src/Camilla.vala:131
 msgid "Count line of codes."
 msgstr ""
 
-#: src/Camilla.vala:129
+#: src/Camilla.vala:132
 msgid "Show debug log at STDOUT."
 msgstr ""
 
-#: src/Camilla.vala:130
+#: src/Camilla.vala:133
 msgid "Show help message."
 msgstr ""
 
-#: src/Camilla.vala:131
+#: src/Camilla.vala:134
 msgid "Show camilla command version."
 msgstr ""

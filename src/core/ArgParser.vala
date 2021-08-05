@@ -122,9 +122,9 @@ namespace Camilla.Core {
         }
 
         /**
-         *
-         *
-         *
+         * Return string that contains all option and arguments.
+         * Option contains ON / OFF information.
+         * @result string that contains all option and arguments.
          */
         public string parseResult () {
             if (!parsed) {
@@ -139,10 +139,10 @@ namespace Camilla.Core {
 
             result += "[Arguments]\n";
             if (argListWithoutOptions.length () == 0) {
-                result += " NO ARGUMENTS.";
+                result += " NO ARGUMENTS.\n";
             } else {
                 foreach (var arg in argListWithoutOptions) {
-                    result += arg;
+                    result += arg + "\n";
                 }
             }
             return result.dup ();
