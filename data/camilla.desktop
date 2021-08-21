@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Camilla
+GenericName=Camilla
+Comment=Camilla is a static analysis tool for the Vala language.
+Categories=Development;
+Exec=/usr/local/bin/camilla
+Icon=/usr/share/icons/hicolor/512x512/apps/camilla.svg
+Terminal=true
