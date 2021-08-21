@@ -1,3 +1,4 @@
+![ICON](https://github.com/nao1215/Camilla/blob/main/data/logo/camilla_logo_side.png)
 # Camilla (**In development.**)
 [![build](https://github.com/nao1215/serial/actions/workflows/build.yml/badge.svg)](https://github.com/nao1215/serial/actions/workflows/build.yml)
 [![test](https://github.com/nao1215/serial/actions/workflows/test.yml/badge.svg)](https://github.com/nao1215/serial/actions/workflows/test.yml)
@@ -15,3 +16,5 @@ Camilla is a static analysis tool for the Vala language.
 
 # Acknowledgments
 - [Log4Vala](https://github.com/nmelnick/Log4Vala): I forked Log4Vala as a logging API and built it into the source tree. The license and changes from the original code are described in [NOTICE](https://github.com/nao1215/Camilla/blob/main/NOTICE).
+
+- [Camilla icon](https://github.com/nao1215/Camilla/blob/main/data/logo/camilla_logo_side.png): The Camilla app icon was created by [Studio Sydney](https://coconala.com/blogs/91476/63000). The copyright and various rights to the icon belong to Studio Sydney.
