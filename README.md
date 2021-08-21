@@ -1,4 +1,7 @@
-![ICON](https://github.com/nao1215/Camilla/blob/main/data/logo/camilla_logo_side.png)
+<div align="center">
+<img src="https://github.com/nao1215/Camilla/blob/main/data/logo/camilla_logo_side.png" alt="The camilla command project logo was created by the Studio Sydney">
+</div>
+
 # Camilla (**In development.**)
 [![build](https://github.com/nao1215/serial/actions/workflows/build.yml/badge.svg)](https://github.com/nao1215/serial/actions/workflows/build.yml)
 [![test](https://github.com/nao1215/serial/actions/workflows/test.yml/badge.svg)](https://github.com/nao1215/serial/actions/workflows/test.yml)
