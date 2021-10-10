@@ -1,0 +1,39 @@
+# ŠIOKS TOKS APIBŪDINANTIS PAVADINIMAS.
+# Copyright (C) METAI PAKETO AUTORINIŲ TEISIŲ VALDYTOJAS
+# Ši rinkmena yra platinama taikant tą pačią licenciją kaip ir camilla paketas.
+# PIRMASIS AUTORIUS <EPAŠTAS@ADRESAS>, METAI.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: camilla\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-08-05 15:19+0900\n"
+"PO-Revision-Date: 2021-10-10 07:10+0300\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: Paulius Narkevičius <paulius.narkevicius@vilniustech.lt>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && (n%100<11 || n%100>19) ? 0 : n%10>=2 && n%10<=9 && (n%100<11 || n%100>19) ? 1 : 2);\n"
+"Language: lt\n"
+
+#: src/Camilla.vala:47
+msgid "camilla is static analysis tool for vala language."
+msgstr "camilla yra vala kalbos statinis analizės įrankis."
+
+#: src/Camilla.vala:131
+msgid "Count line of codes."
+msgstr "Kodo eilučių kiekis."
+
+#: src/Camilla.vala:132
+msgid "Show debug log at STDOUT."
+msgstr "STDOUT metu pateikti derinimo žurnalinius įrašus."
+
+#: src/Camilla.vala:133
+msgid "Show help message."
+msgstr "Pateikti pagalbos pranešimą."
+
+#: src/Camilla.vala:134
+msgid "Show camilla command version."
+msgstr "Pateikti camilla komandinės eilutės versiją."
