@@ -1,0 +1,39 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the camilla package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: camilla\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-08-05 15:19+0900\n"
+"PO-Revision-Date: 2022-11-01 10:02+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: src/Camilla.vala:47
+msgid "camilla is static analysis tool for vala language."
+msgstr "camilla jest to instrument do analizy statycznej języka Vala."
+
+#: src/Camilla.vala:131
+msgid "Count line of codes."
+msgstr "Licz wiersze kodów."
+
+#: src/Camilla.vala:132
+msgid "Show debug log at STDOUT."
+msgstr "Pokaż dziennik debugowania na wyjściu STD."
+
+#: src/Camilla.vala:133
+msgid "Show help message."
+msgstr "Pokaż komunikat pomocy."
+
+#: src/Camilla.vala:134
+msgid "Show camilla command version."
+msgstr "Pokaż wersję polecenia camilla."

@@ -1,0 +1,39 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the camilla package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: camilla\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-08-05 15:19+0900\n"
+"PO-Revision-Date: 2022-11-01 10:06+0200\n"
+"Last-Translator: PolPolyLingo <paulius.narkevicius@vilniustech.lt>\n"
+"Language-Team: \n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && (n%100<11 || n%100>19) ? 0 : n%10>=2 && n%10<=9 && (n%100<11 || n%100>19) ? 1 : 2);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: src/Camilla.vala:47
+msgid "camilla is static analysis tool for vala language."
+msgstr "camilla tai statiškas analizės instrumentas vala kalbai."
+
+#: src/Camilla.vala:131
+msgid "Count line of codes."
+msgstr "Išeities kodo eilučių kiekis."
+
+#: src/Camilla.vala:132
+msgid "Show debug log at STDOUT."
+msgstr "STD išvestyje pateikti derinimo žurnalinius išrašus."
+
+#: src/Camilla.vala:133
+msgid "Show help message."
+msgstr "Pranešimas pagalbai teikti."
+
+#: src/Camilla.vala:134
+msgid "Show camilla command version."
+msgstr "Camilla komandinės versijos pateikimas."
